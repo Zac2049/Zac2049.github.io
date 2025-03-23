@@ -2,17 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://Zac2049.github.io/</loc>
+    <loc>https://example.org/</loc>
     <lastmod>2025-03-22T18:44:55+08:00</lastmod>
   </url><url>
-    <loc>https://Zac2049.github.io/posts/my-first-post/</loc>
+    <loc>https://example.org/posts/my-first-post/</loc>
     <lastmod>2025-03-22T18:44:55+08:00</lastmod>
   </url><url>
-    <loc>https://Zac2049.github.io/posts/</loc>
+    <loc>https://example.org/posts/</loc>
     <lastmod>2025-03-22T18:44:55+08:00</lastmod>
   </url><url>
-    <loc>https://Zac2049.github.io/categories/</loc>
-  </url><url>
-    <loc>https://Zac2049.github.io/tags/</loc>
+    <loc>https://example.org/tags/</loc>
   </url>
 </urlset>
