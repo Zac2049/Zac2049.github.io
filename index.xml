@@ -1,33 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>欢迎来到我的博客 on My website</title>
-    <link>https://example.org/</link>
-    <description>Recent content in 欢迎来到我的博客 on My website</description>
+    <title>Hedgehugger Land</title>
+    <link>http://localhost:63668/</link>
+    <description>Recent content on Hedgehugger Land</description>
     <generator>Hugo</generator>
-    <language>en-us</language>
+    <language>zh-cn</language>
     <lastBuildDate>Sun, 23 Mar 2025 10:00:00 +0800</lastBuildDate>
-    <atom:link href="https://example.org/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:63668/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>我的第一篇文章</title>
-      <link>https://example.org/posts/my-first-post/</link>
+      <link>http://localhost:63668/posts/my-first-post/</link>
       <pubDate>Sun, 23 Mar 2025 10:00:00 +0800</pubDate>
-      <guid>https://example.org/posts/my-first-post/</guid>
+      <guid>http://localhost:63668/posts/my-first-post/</guid>
       <description>&lt;h1 class=&#34;heading&#34; id=&#34;hiii&#34;&gt;&#xA;  Hiii&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#hiii&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;welcome-to-my-blog&#34;&gt;&#xA;  Welcome to My Blog!&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#welcome-to-my-blog&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;Hello and welcome to my new blog! This is my very first post, and I&amp;rsquo;m excited to share my thoughts, experiences, and knowledge with you all. This blog will be a place where I document my journey and share interesting discoveries along the way.&lt;/p&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;markdown-examples&#34;&gt;&#xA;  Markdown Examples&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#markdown-examples&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;Here are some examples of what you can do with Markdown formatting:&lt;/p&gt;&#xA;&lt;h3 class=&#34;heading&#34; id=&#34;headers&#34;&gt;&#xA;  Headers&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#headers&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;As you can see, I&amp;rsquo;m using different levels of headers to organize content.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>我的第二篇文章</title>
-      <link>https://example.org/posts/second-post/</link>
-      <pubDate>Sun, 23 Mar 2025 10:00:00 +0800</pubDate>
-      <guid>https://example.org/posts/second-post/</guid>
-      <description>&lt;p&gt;这里是正文，支持 &lt;strong&gt;Markdown&lt;/strong&gt; 语法。今天很好&lt;/p&gt;</description>
-    </item>
-    <item>
       <title>关于我</title>
-      <link>https://example.org/about/</link>
+      <link>http://localhost:63668/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://example.org/about/</guid>
-      <description>&lt;p&gt;我是一个热爱写作的人&amp;hellip;&lt;/p&gt;</description>
+      <guid>http://localhost:63668/about/</guid>
+      <description>&lt;p&gt;“高山仰止，景行行止。虽不能至，然心向往之。”&lt;/p&gt;&#xA;&lt;p&gt;我是 Hedgehugger。Hedgehugger是“hedgehog hugger”的拼音缩写，意为拥抱刺猬的人。为什么拥抱刺猬？因为在&lt;a href=&#34;https://zh.wikipedia.org/zh-cn/%E5%88%BA%E7%8C%AC%E5%9B%B0%E5%A2%83&#34;&gt;刺猬困境&lt;/a&gt;的描述中，寒冷的冬天，刺猬为了存活需要相互靠近共同取暖，但是刺猬的刺会伤到彼此，这就是它们的困境。我需要勇气，拥抱刺猬，当然实际我也是只刺猬🦔。&lt;/p&gt;&#xA;&lt;h3 class=&#34;heading&#34; id=&#34;属性&#34;&gt;&#xA;  属性&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#%e5%b1%9e%e6%80%a7&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;本人喜欢看电影，不能说有十足的雅兴和品味，但品鉴文艺作品是乐在其中的。本人音乐口味混杂，流行、独立、摇滚、古典，中文、英文、日文、西文等皆乐于听。年轻时候喜欢拿笔涂鸦绘画，虽不能说十分精湛，也有小成，高中曾想转为美术生参加艺考，最后弃之，正常高考，学理工科，直至硕士毕业。&lt;/p&gt;&#xA;&lt;h3 class=&#34;heading&#34; id=&#34;联系方式&#34;&gt;&#xA;  联系方式&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#%e8%81%94%e7%b3%bb%e6%96%b9%e5%bc%8f&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;GitHub: &lt;a href=&#34;https://github.com/Zac2049&#34;&gt;Zac2049&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;Mail: &lt;a href=&#34;mailto:perfectblue@duck.com&#34;&gt;perfectblue@duck.com&lt;/a&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
