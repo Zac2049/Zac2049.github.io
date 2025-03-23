@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Home on My website</title>
+    <title>欢迎来到我的博客 on My website</title>
     <link>https://example.org/</link>
-    <description>Recent content in Home on My website</description>
+    <description>Recent content in 欢迎来到我的博客 on My website</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 22 Mar 2025 18:44:55 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 23 Mar 2025 10:00:00 +0800</lastBuildDate>
     <atom:link href="https://example.org/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>My First Blog Post</title>
+      <title>我的第一篇文章</title>
       <link>https://example.org/posts/my-first-post/</link>
-      <pubDate>Sat, 22 Mar 2025 18:44:55 +0800</pubDate>
+      <pubDate>Sun, 23 Mar 2025 10:00:00 +0800</pubDate>
       <guid>https://example.org/posts/my-first-post/</guid>
       <description>&lt;h1 class=&#34;heading&#34; id=&#34;hiii&#34;&gt;&#xA;  Hiii&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#hiii&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;welcome-to-my-blog&#34;&gt;&#xA;  Welcome to My Blog!&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#welcome-to-my-blog&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;Hello and welcome to my new blog! This is my very first post, and I&amp;rsquo;m excited to share my thoughts, experiences, and knowledge with you all. This blog will be a place where I document my journey and share interesting discoveries along the way.&lt;/p&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;markdown-examples&#34;&gt;&#xA;  Markdown Examples&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#markdown-examples&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;Here are some examples of what you can do with Markdown formatting:&lt;/p&gt;&#xA;&lt;h3 class=&#34;heading&#34; id=&#34;headers&#34;&gt;&#xA;  Headers&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#headers&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;As you can see, I&amp;rsquo;m using different levels of headers to organize content.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>我的第二篇文章</title>
+      <link>https://example.org/posts/second-post/</link>
+      <pubDate>Sun, 23 Mar 2025 10:00:00 +0800</pubDate>
+      <guid>https://example.org/posts/second-post/</guid>
+      <description>&lt;p&gt;这里是正文，支持 &lt;strong&gt;Markdown&lt;/strong&gt; 语法。今天很好&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>关于我</title>
+      <link>https://example.org/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://example.org/about/</guid>
+      <description>&lt;p&gt;我是一个热爱写作的人&amp;hellip;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
