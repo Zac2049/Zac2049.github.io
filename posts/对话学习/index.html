@@ -32,16 +32,18 @@
 
 <title>
     
-     | Hedgehugger Land
+    Test Long Formula | Hedgehugger Land
     
 </title>
 
-<link rel="canonical" href="http://localhost:1313/posts/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B7%A5%E7%A8%8B/"/>
+<link rel="canonical" href="http://localhost:1313/posts/%E5%AF%B9%E8%AF%9D%E5%AD%A6%E4%B9%A0/"/>
 
-<meta property="og:url" content="http://localhost:1313/posts/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B7%A5%E7%A8%8B/">
+<meta property="og:url" content="http://localhost:1313/posts/%E5%AF%B9%E8%AF%9D%E5%AD%A6%E4%B9%A0/">
   <meta property="og:site_name" content="Hedgehugger Land">
-  <meta property="og:title" content="Hedgehugger Land">
-  <meta property="og:description" content="技术分享与个人思考">
+  <meta property="og:title" content="Test Long Formula">
+  <meta property="og:description" content="delimiters: [ { left: &#34;\(&#34;, right: &#34;\)&#34;, display: false }, { left: &#34;\[&#34;, right: &#34;\]&#34;, display: true }, { left: &#34;\\(&#34;, right: &#34;\\)&#34;, display: false }, { left: &#34;\\[&#34;, right: &#34;\\]&#34;, display: true }, { left: &#34;$&#34;, right: &#34;$&#34;, display: false }, { left: &#34;$$&#34;, right: &#34;$$&#34;, display: true }, ] 短公式： $$ \alpha_t $$
+组合短公式： $$ \alpha_t = 1 - \beta_t $$
+$$ \bar{\alpha}_t = \prod_{s=1}^t \alpha_s $$ 长公式： $$ x_t = \sqrt{\alpha_t} (\sqrt{\bar{\alpha}_{t-1}} x_0 &#43; \sqrt{1 - \bar{\alpha}_{t-1}} \epsilon_{t-1}) &#43; \sqrt{\beta_t} \epsilon $$">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -150,20 +152,60 @@
 
 
 <div class="breadcrumbs"><a href="/">Home</a><span class="breadcrumbs-separator">/</span><a href="/posts/">Posts</a><span class="breadcrumbs-separator">/</span>
-        <a href="/posts/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B7%A5%E7%A8%8B/"></a></div>
+        <a href="/posts/%E5%AF%B9%E8%AF%9D%E5%AD%A6%E4%B9%A0/">Test Long Formula</a></div>
 
 
 <div >
   <article>
     <header class="single-intro-container">
         
-        <h1 class="single-title"></h1>
+        <h1 class="single-title">Test Long Formula</h1>
         
         
     </header>
     
     <div class="single-content">
-      
+      <pre><code>  delimiters: [
+    { left: &quot;\(&quot;, right: &quot;\)&quot;, display: false },
+    { left: &quot;\[&quot;, right: &quot;\]&quot;, display: true },
+    { left: &quot;\\(&quot;, right: &quot;\\)&quot;, display: false },
+    { left: &quot;\\[&quot;, right: &quot;\\]&quot;, display: true },
+    { left: &quot;$&quot;, right: &quot;$&quot;, display: false },
+    { left: &quot;$$&quot;, right: &quot;$$&quot;, display: true },
+  ]
+</code></pre>
+<p>短公式：
+$$
+\alpha_t
+$$</p>
+<p>组合短公式：
+$$
+\alpha_t = 1 - \beta_t
+$$</p>
+
+$$
+\bar{\alpha}_t = \prod_{s=1}^t \alpha_s
+$$
+
+
+<p>长公式：
+
+$$
+x_t = \sqrt{\alpha_t} (\sqrt{\bar{\alpha}_{t-1}} x_0 + \sqrt{1 - \bar{\alpha}_{t-1}} \epsilon_{t-1}) + \sqrt{\beta_t} \epsilon
+$$
+
+</p>
+<p>多段公式：
+
+$$
+\begin{align}
+\alpha_t &= 1 - \beta_t, \\
+\bar{\alpha}_t &= \prod_{s=1}^t \alpha_s
+\end{align}
+$$
+
+</p>
+
     </div>
   </article>
 
@@ -187,8 +229,8 @@
             
             <div class="single-pagination-container-next">
                 <div class="single-pagination-text">
-                    <a href="/posts/my-first-post/">
-                        我的第一篇文章
+                    <a href="/posts/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B7%A5%E7%A8%8B/">
+                        
                     </a>
                 </div>
                 <div class="single-pagination-text">→</div>
@@ -261,6 +303,27 @@
 
   </footer>
 
+  
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  
+<script defer 
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ]
+    });
+  });
+</script>
   
 </body>
 

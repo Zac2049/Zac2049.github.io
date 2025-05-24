@@ -8,11 +8,23 @@
 
 
 
-<link rel="icon" type="image/ico" href="http://localhost:1313//favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313//favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313//favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313//android-chrome-192x192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313//apple-touch-icon.png">
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
 
 <link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/%E6%8A%80%E6%9C%AF/index.xml" title="Hedgehugger Land">
 <meta name="description" content=""/>
@@ -40,9 +52,19 @@
 
 
 
+<link rel="stylesheet" href="/assets/combined.min.57df9e7d692553f966cff4593ede6b53efb74da234876bacffeac774bd572e53.css" media="all">
 
-<link rel="stylesheet" href="/assets/combined.min.11e9f0a5e6a89c2904166346a99925b6f4608a4728beec027c6b08044489721c.css" media="all">
 
+
+
+
+
+
+
+
+
+
+    
 
 
 
@@ -67,41 +89,46 @@
         <a href="http://localhost:1313/">Hedgehugger Land</a>
     </h1>
 
-    <div class="flex">
+    <div class="header-menu">
         
 
         
         
-      
-        <p class="small ">
+
+        <p
+            class="small ">
             <a href="/" >
                 /home
             </a>
         </p>
         
-      
-        <p class="small ">
+
+        <p
+            class="small ">
             <a href="/posts" >
                 /posts
             </a>
         </p>
         
-      
-        <p class="small ">
+
+        <p
+            class="small ">
             <a href="/categories" >
                 /categories
             </a>
         </p>
         
-      
-        <p class="small ">
+
+        <p
+            class="small ">
             <a href="/tags" >
                 /tags
             </a>
         </p>
         
-      
-        <p class="small ">
+
+        <p
+            class="small ">
             <a href="/about" >
                 /about
             </a>
@@ -156,7 +183,40 @@
         </p>
 
         
-        <p class="line-summary">  </p>
+        <p class="line-summary"> <p>好的！下面我会详细讲解去噪扩散概率模型（Denoising Diffusion Probabilistic Models, DDPM）的损失函数和采样过程的推导，尽量清晰、结构化，并包含必要的数学公式。为了便于理解，我会从DDPM的核心思想开始，逐步推导损失函数（即训练目标）和采样过程（即生成过程），并在必要处解释背后的直觉。</p>
+<hr>
+<h2 class="heading" id="1-ddpm的核心思想">
+  1. DDPM的核心思想
+  <a class="anchor" href="#1-ddpm%e7%9a%84%e6%a0%b8%e5%bf%83%e6%80%9d%e6%83%b3">#</a>
+</h2>
+<p>DDPM是一种基于概率的生成模型，其核心思想是通过模拟一个<strong>前向扩散过程</strong>（逐渐向数据添加噪声）和一个<strong>逆向去噪过程</strong>（从噪声恢复数据）来生成高质量样本。DDPM的训练目标是学习逆向过程的概率分布，使其能够从纯噪声中逐步生成逼真的样本。</p>
+<ul>
+<li><strong>前向过程</strong>（Forward Process）：从真实数据 $ x_0 $ 开始，逐步添加高斯噪声，经过 $ T $ 步后，数据变成近似的各向同性高斯噪声。</li>
+<li><strong>逆向过程</strong>（Reverse Process）：从高斯噪声 $ x_T $ 开始，逐步去噪，恢复到原始数据 $ x_0 $。</li>
+</ul>
+<p>DDPM的关键是逆向过程的概率分布 $ p_\theta(x_{t-1}|x_t) $ 难以直接建模，因此通过训练一个神经网络来逼近它，并通过优化一个变分下界（variational lower bound）来学习参数。</p>
+<hr>
+<h2 class="heading" id="2-前向扩散过程的推导">
+  2. 前向扩散过程的推导
+  <a class="anchor" href="#2-%e5%89%8d%e5%90%91%e6%89%a9%e6%95%a3%e8%bf%87%e7%a8%8b%e7%9a%84%e6%8e%a8%e5%af%bc">#</a>
+</h2>
+<h3 class="heading" id="21-前向过程的定义">
+  2.1 前向过程的定义
+  <a class="anchor" href="#21-%e5%89%8d%e5%90%91%e8%bf%87%e7%a8%8b%e7%9a%84%e5%ae%9a%e4%b9%89">#</a>
+</h3>
+<p>前向过程是一个马尔可夫链，定义为从真实数据 $ x_0 $ 到噪声 $ x_T $ 的逐步加噪过程。每一步添加一个高斯噪声，形式为：</p>
+
+$$ q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1-\beta_t} x_{t-1}, \beta_t I) $$
+
+
+<p>其中：</p>
+<ul>
+<li>$ x_t $ 是第 $ t $ 步的加噪数据。</li>
+<li>$ \beta_t \in (0, 1) $ 是第 $ t $ 步的噪声调度参数，控制每一步添加的噪声量。</li>
+<li>$ \sqrt{1-\beta_t} x_{t-1} $ 是均值，意味着数据被稍微缩放。</li>
+<li>$ \beta_t I $ 是方差，表示添加的噪声强度。</li>
+</ul>
+<p>直观来说，每一步都在 $ x_{t-1} $ 的基础上乘以一个小于1的系数（使信号衰减），并加上一个高斯噪声。</p> </p>
         
     </div>
 </div>
@@ -215,8 +275,32 @@
     </main>
   </div>
 
+  
+  
+
+
+
+
+
+    
+
+
+
+
   <footer>
     
+
+    
+    
+
+
+
+
+
+    
+
+
+
 
     
     <p>Powered by
@@ -232,7 +316,6 @@
   </footer>
 
   
-
 </body>
 
 <script src="/js/theme-switch.js"></script>

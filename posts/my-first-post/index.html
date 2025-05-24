@@ -8,11 +8,23 @@
 
 
 
-<link rel="icon" type="image/ico" href="http://localhost:1313//favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313//favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313//favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313//android-chrome-192x192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313//apple-touch-icon.png">
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
 
 <meta name="description" content=""/>
 
@@ -46,9 +58,19 @@ Headers # As you can see, I’m using different levels of headers to organize co
 
 
 
+<link rel="stylesheet" href="/assets/combined.min.57df9e7d692553f966cff4593ede6b53efb74da234876bacffeac774bd572e53.css" media="all">
 
-<link rel="stylesheet" href="/assets/combined.min.11e9f0a5e6a89c2904166346a99925b6f4608a4728beec027c6b08044489721c.css" media="all">
 
+
+
+
+
+
+
+
+
+
+    
 
 
 
@@ -73,41 +95,46 @@ Headers # As you can see, I’m using different levels of headers to organize co
         <a href="http://localhost:1313/">Hedgehugger Land</a>
     </h1>
 
-    <div class="flex">
+    <div class="header-menu">
         
 
         
         
-      
-        <p class="small ">
+
+        <p
+            class="small ">
             <a href="/" >
                 /home
             </a>
         </p>
         
-      
-        <p class="small ">
+
+        <p
+            class="small ">
             <a href="/posts" >
                 /posts
             </a>
         </p>
         
-      
-        <p class="small ">
+
+        <p
+            class="small ">
             <a href="/categories" >
                 /categories
             </a>
         </p>
         
-      
-        <p class="small ">
+
+        <p
+            class="small ">
             <a href="/tags" >
                 /tags
             </a>
         </p>
         
-      
-        <p class="small ">
+
+        <p
+            class="small ">
             <a href="/about" >
                 /about
             </a>
@@ -133,38 +160,25 @@ Headers # As you can see, I’m using different levels of headers to organize co
 
 
 <div >
-
-  <div class="single-intro-container">
-
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">我的第一篇文章</h1>
+        
+        <div class="single-subsummary">
+          
+          <div>
+            
+            <p class="single-date">
+              <time datetime="2025-03-23T10:00:00&#43;08:00">March 23, 2025</time>
+            </p>
+          </div>
+        </div>
+        
+    </header>
     
-
-    <h1 class="single-title">我的第一篇文章</h1>
-    
-
-    
-
-    <p class="single-readtime">
-      
-      
-      
-      <time datetime="2025-03-23T10:00:00&#43;08:00">March 23, 2025</time>
-      
-
-      
-    </p>
-
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  <div class="single-content">
-    <h1 class="heading" id="hiii">
+    <div class="single-content">
+      <h1 class="heading" id="hiii">
   Hiii
   <a class="anchor" href="#hiii">#</a>
 </h1>
@@ -264,12 +278,12 @@ Perfect for emphasizing important points or quoting someone.</p></blockquote>
   Math Example
   <a class="anchor" href="#math-example">#</a>
 </h2>
-<p>$$
+<p>$
 E = mc^2
-$$</p>
+$</p>
 
-    
-  </div>
+    </div>
+  </article>
 
   
 
@@ -334,8 +348,32 @@ $$</p>
     </main>
   </div>
 
+  
+  
+
+
+
+
+
+    
+
+
+
+
   <footer>
     
+
+    
+    
+
+
+
+
+
+    
+
+
+
 
     
     <p>Powered by
@@ -351,7 +389,31 @@ $$</p>
   </footer>
 
   
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  
+<script defer 
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
 
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false },
+        { left: "\\[", right: "\\]", display: true },
+        { left: "\\(", right: "\\)", display: false },
+        { left: "\[", right: "\]", display: true },
+        { left: "\(", right: "\)", display: false },
+      ]
+    });
+  });
+</script>
+  
 </body>
 
 <script src="/js/theme-switch.js"></script>
