@@ -23,13 +23,6 @@
       <description>&lt;h1 class=&#34;heading&#34; id=&#34;hiii&#34;&gt;&#xA;  Hiii&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#hiii&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;welcome-to-my-blog&#34;&gt;&#xA;  Welcome to My Blog!&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#welcome-to-my-blog&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;Hello and welcome to my new blog! This is my very first post, and I&amp;rsquo;m excited to share my thoughts, experiences, and knowledge with you all. This blog will be a place where I document my journey and share interesting discoveries along the way.&lt;/p&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;markdown-examples&#34;&gt;&#xA;  Markdown Examples&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#markdown-examples&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;Here are some examples of what you can do with Markdown formatting:&lt;/p&gt;&#xA;&lt;h3 class=&#34;heading&#34; id=&#34;headers&#34;&gt;&#xA;  Headers&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#headers&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;As you can see, I&amp;rsquo;m using different levels of headers to organize content.&lt;/p&gt;</description>
     </item>
     <item>
-      <title></title>
-      <link>http://localhost:1313/posts/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B7%A5%E7%A8%8B/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B7%A5%E7%A8%8B/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>关于我</title>
       <link>http://localhost:1313/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
