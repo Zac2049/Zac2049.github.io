@@ -60,7 +60,7 @@ $ x_t $ 是第 $ t $ 步的加噪数据。 $ \beta_t \in (0, 1) $ 是第 $ t $ �
 
 
 
-<link rel="stylesheet" href="/assets/combined.min.e7a642dfbc0acceef134bdb77a313a7f14dd45ee084eb201f6944a8b4bc532d6.css" media="all">
+<link rel="stylesheet" href="/assets/combined.min.57df9e7d692553f966cff4593ede6b53efb74da234876bacffeac774bd572e53.css" media="all">
 
 
 
@@ -115,14 +115,6 @@ $ x_t $ 是第 $ t $ 步的加噪数据。 $ \beta_t \in (0, 1) $ 是第 $ t $ �
             class="small ">
             <a href="/posts" >
                 /posts
-            </a>
-        </p>
-        
-
-        <p
-            class="small ">
-            <a href="/categories" >
-                /categories
             </a>
         </p>
         
@@ -449,31 +441,7 @@ $$ x_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{\beta_t}{\sqrt{1 - \ba
   <a class="anchor" href="#7-%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0%e7%ae%80%e8%a6%81">#</a>
 </h2>
 <p>以下是一个简化的DDPM训练和采样的伪代码，供参考：</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 训练</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 训练</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">train_ddpm</span>(model, data_loader, num_epochs, T, betas):
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> epoch <span style="color:#f92672">in</span> range(num_epochs):
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> x0 <span style="color:#f92672">in</span> data_loader:
@@ -493,9 +461,7 @@ $$ x_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{\beta_t}{\sqrt{1 - \ba
 </span></span><span style="display:flex;"><span>        mu_theta <span style="color:#f92672">=</span> (xt <span style="color:#f92672">-</span> betas[t] <span style="color:#f92672">/</span> sqrt(<span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> alpha_bar_t) <span style="color:#f92672">*</span> epsilon_theta) <span style="color:#f92672">/</span> sqrt(alpha_t)
 </span></span><span style="display:flex;"><span>        xt <span style="color:#f92672">=</span> mu_theta <span style="color:#f92672">+</span> sqrt(betas[t]) <span style="color:#f92672">*</span> torch<span style="color:#f92672">.</span>randn_like(xt)  <span style="color:#75715e"># 逆向采样</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> xt
-</span></span></code></pre></td></tr></table>
-</div>
-</div>
+</span></span></code></pre></div>
     </div>
   </article>
 
