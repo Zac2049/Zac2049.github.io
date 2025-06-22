@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>生活 on Hedgehugger Land</title>
-    <link>https://zac2049.github.io/tags/%E7%94%9F%E6%B4%BB/</link>
+    <link>http://localhost:1313/tags/%E7%94%9F%E6%B4%BB/</link>
     <description>Recent content in 生活 on Hedgehugger Land</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sun, 23 Mar 2025 10:00:00 +0800</lastBuildDate>
-    <atom:link href="https://zac2049.github.io/tags/%E7%94%9F%E6%B4%BB/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/%E7%94%9F%E6%B4%BB/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>我的第一篇文章</title>
-      <link>https://zac2049.github.io/posts/my-first-post/</link>
+      <link>http://localhost:1313/posts/my-first-post/</link>
       <pubDate>Sun, 23 Mar 2025 10:00:00 +0800</pubDate>
-      <guid>https://zac2049.github.io/posts/my-first-post/</guid>
+      <guid>http://localhost:1313/posts/my-first-post/</guid>
       <description>&lt;h1 class=&#34;heading&#34; id=&#34;hiii&#34;&gt;&#xA;  Hiii&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#hiii&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;welcome-to-my-blog&#34;&gt;&#xA;  Welcome to My Blog!&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#welcome-to-my-blog&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;Hello and welcome to my new blog! This is my very first post, and I&amp;rsquo;m excited to share my thoughts, experiences, and knowledge with you all. This blog will be a place where I document my journey and share interesting discoveries along the way.&lt;/p&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;markdown-examples&#34;&gt;&#xA;  Markdown Examples&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#markdown-examples&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;Here are some examples of what you can do with Markdown formatting:&lt;/p&gt;&#xA;&lt;h3 class=&#34;heading&#34; id=&#34;headers&#34;&gt;&#xA;  Headers&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#headers&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;As you can see, I&amp;rsquo;m using different levels of headers to organize content.&lt;/p&gt;</description>
     </item>
   </channel>

@@ -2,7 +2,7 @@
 <html lang="zh-cn"
   dir="ltr">
 
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 
@@ -20,11 +20,11 @@
 
 
 
-<link rel="icon" type="image/ico" href="https://zac2049.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://zac2049.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://zac2049.github.io/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="https://zac2049.github.io/android-chrome-192x192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="https://zac2049.github.io/apple-touch-icon.png">
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
 
 <meta name="description" content=""/>
 
@@ -36,9 +36,9 @@
     
 </title>
 
-<link rel="canonical" href="https://zac2049.github.io/posts/vscodevim%E4%BB%A5%E5%8F%8A%E6%88%91%E4%BB%AC%E8%B5%96%E4%BB%A5%E7%94%9F%E5%AD%98%E7%9A%84%E7%BC%96%E8%BE%91/"/>
+<link rel="canonical" href="http://localhost:1313/posts/vscodevim%E4%BB%A5%E5%8F%8A%E6%88%91%E4%BB%AC%E8%B5%96%E4%BB%A5%E7%94%9F%E5%AD%98%E7%9A%84%E7%BC%96%E8%BE%91/"/>
 
-<meta property="og:url" content="https://zac2049.github.io/posts/vscodevim%E4%BB%A5%E5%8F%8A%E6%88%91%E4%BB%AC%E8%B5%96%E4%BB%A5%E7%94%9F%E5%AD%98%E7%9A%84%E7%BC%96%E8%BE%91/">
+<meta property="og:url" content="http://localhost:1313/posts/vscodevim%E4%BB%A5%E5%8F%8A%E6%88%91%E4%BB%AC%E8%B5%96%E4%BB%A5%E7%94%9F%E5%AD%98%E7%9A%84%E7%BC%96%E8%BE%91/">
   <meta property="og:site_name" content="Hedgehugger Land">
   <meta property="og:title" content="VSCode &amp; Vim以及我们赖以生存的编辑器">
   <meta property="og:description" content="VSCode 常用快捷键（O3 回答） # 排名 常用操作 VS Code 快捷键Win/Linux (Mac) Vim 内建等效操作 1 多光标：选下一处/全部匹配 Ctrl &#43;D / Ctrl &#43;Shift &#43;L (⌘ &#43;D / ⌘ &#43;Shift &#43;L) Ctrl-v 列块选 → j/k 移动 → A/I 统一编辑；或 /pattern → :g//norm … 2 命令面板 Ctrl &#43;Shift &#43;P (⌘ &#43;Shift &#43;P) : 进入命令行；q: 打开历史 3 快速打开文件 Ctrl &#43;P (⌘ &#43;P) :e path&lt;Tab&gt; 模糊补全，或 :find {file} 4 行/块注释切换 Ctrl &#43;/ (⌘ &#43;/) 视觉模式选择 → gc（需安装 surround/commentary；原生可用 :s/^/\/\// 等批量） 5 复制/删除整行 Shift &#43;Alt &#43;↓ / ↑ 复制；Ctrl &#43;Shift &#43;K 删除 (⌥ &#43;Shift &#43;↓ / ↑，⌘ &#43;Shift &#43;K) yy p 复制行；dd 删除行 6 移动行上下 Alt &#43;↓ / ↑ (⌥ &#43;↓ / ↑) :m&#43;1 / :m-2；可在可视行模式 V 后用 J/K 7 全文件搜索 Ctrl &#43;Shift &#43;F (⌘ &#43;Shift &#43;F) :vimgrep /pattern/ **/* → :copen 8 当前文件内查找 Ctrl &#43;F (⌘ &#43;F) /pattern；n/N 继续 9 批量替换 Ctrl &#43;H (⌘ &#43;Alt &#43;F) :%s/old/new/gc 10 格式化文档 Shift &#43;Alt &#43;F (⌥ &#43;Shift &#43;F) 依据语言插件：gg=G（缩进格式），或外部 LSP :!clang-format 等 11 跳到定义 / 返回 F12 / Alt &#43;← (⌘ &#43;点击 / ⌃ &#43;-) gd 跳定义，Ctrl-o 回退 12 重命名符号 F2 :IncRename（Neovim 新命令）或插件 coc.nvim gr；原生可 :%s/&lt;C-r&gt;&lt;C-w&gt;/new/gc 13 切换编辑器标签 Ctrl &#43;PgUp/PgDn (⌘ &#43;⌥ &#43;←/→) :bn / :bp，或 gt / gT 14 打开内置终端 Ctrl &#43;` (⌃ &#43;` ) :terminal 分屏终端 15 折叠/展开代码块 Ctrl &#43;Shift &#43;[ / ] (⌥ &#43;⌘ &#43;[ / ]) zc 折叠，zo 展开；zM / zR 全折/全展 别忽视 VS Code 自带的“三板斧” # 功能 默认快捷键 (Win/Linux) 强在哪 多光标 Alt&#43;Click 选点；Ctrl&#43;D 选下一处；Ctrl&#43;Shift&#43;L 选全部 同时改变量名/声明最简方式 命令面板 Ctrl&#43;Shift&#43;P 所有命令即时 fuzzy 搜索 全局跳转 Ctrl&#43;T 查看符号；Ctrl&#43;P 模糊打开文件 不需要第三方插件也像 IDE">
@@ -57,10 +57,6 @@
 
 
 <link rel="stylesheet" href="/assets/combined.min.57df9e7d692553f966cff4593ede6b53efb74da234876bacffeac774bd572e53.css" media="all">
-
-
-
-
 
 
 
@@ -94,7 +90,7 @@
     
 
     <h1 class="header-title">
-        <a href="https://zac2049.github.io/">Hedgehugger Land</a>
+        <a href="http://localhost:1313/">Hedgehugger Land</a>
     </h1>
 
     <div class="header-menu">
