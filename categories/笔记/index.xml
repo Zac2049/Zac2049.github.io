@@ -1,40 +1,246 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>笔记 on Hedgehugger Land</title>
-    <link>https://zac2049.github.io/categories/%E7%AC%94%E8%AE%B0/</link>
-    <description>Recent content in 笔记 on Hedgehugger Land</description>
-    <generator>Hugo</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Fri, 09 May 2025 10:00:00 +0800</lastBuildDate>
-    <atom:link href="https://zac2049.github.io/categories/%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Mac 上制作 Win11 安装 U 盘</title>
-      <link>https://zac2049.github.io/posts/mac%E4%B8%8A%E5%88%B6%E4%BD%9Cwin11%E7%9A%84u%E7%9B%98/</link>
-      <pubDate>Fri, 09 May 2025 10:00:00 +0800</pubDate>
-      <guid>https://zac2049.github.io/posts/mac%E4%B8%8A%E5%88%B6%E4%BD%9Cwin11%E7%9A%84u%E7%9B%98/</guid>
-      <description>&lt;p&gt;下面是**基于你遇到的问题（install.wim 太大，&lt;code&gt;mv&lt;/code&gt; 失败）**之后，&lt;strong&gt;修正优化的完整终端操作步骤&lt;/strong&gt;。我们将采取 &lt;strong&gt;先复制 install.wim 到本地磁盘，再使用 &lt;code&gt;wimlib&lt;/code&gt; 分割后写入 U 盘&lt;/strong&gt; 的方式，确保整个流程稳定、可靠，适配 Windows 11 的安装要求。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;-mac-上制作-win11-安装-u-盘分割-installwim适配-4gb&#34;&gt;&#xA;  ✅ Mac 上制作 Win11 安装 U 盘（分割 install.wim，适配 &amp;gt;4GB）&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#-mac-%e4%b8%8a%e5%88%b6%e4%bd%9c-win11-%e5%ae%89%e8%a3%85-u-%e7%9b%98%e5%88%86%e5%89%b2-installwim%e9%80%82%e9%85%8d-4gb&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;h3 class=&#34;heading&#34; id=&#34;-前提准备&#34;&gt;&#xA;  📦 前提准备&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#-%e5%89%8d%e6%8f%90%e5%87%86%e5%a4%87&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&#xA;&lt;div class=&#34;table-outer&#34;&gt;&#xA;    &lt;table&gt;&#xA;        &lt;thead&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;th&gt;项目&lt;/th&gt;&#xA;                &lt;th&gt;要求&lt;/th&gt;&#xA;            &lt;/tr&gt;&#xA;        &lt;/thead&gt;&#xA;        &lt;tbody&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td&gt;系统镜像&lt;/td&gt;&#xA;                &lt;td&gt;下载 Win11 官方 ISO&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td&gt;U 盘&lt;/td&gt;&#xA;                &lt;td&gt;≥8GB，建议使用 &lt;strong&gt;ExFAT&lt;/strong&gt; 格式，避免 FAT32 限制&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td&gt;工具&lt;/td&gt;&#xA;                &lt;td&gt;Terminal，Homebrew，wimlib&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td&gt;文件路径&lt;/td&gt;&#xA;                &lt;td&gt;本文示例路径使用：&lt;code&gt;/Volumes/WIN11&lt;/code&gt; 为 U 盘，&lt;code&gt;~/Desktop/install.wim&lt;/code&gt; 为中转文件&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;        &lt;/tbody&gt;&#xA;    &lt;/table&gt;&#xA;&lt;/div&gt;&lt;hr&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;-全流程操作步骤&#34;&gt;&#xA;  🛠️ 全流程操作步骤&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#-%e5%85%a8%e6%b5%81%e7%a8%8b%e6%93%8d%e4%bd%9c%e6%ad%a5%e9%aa%a4&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;h3 class=&#34;heading&#34; id=&#34;1-插入-u-盘并查看设备号&#34;&gt;&#xA;  🔹1. 插入 U 盘并查看设备号&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#1-%e6%8f%92%e5%85%a5-u-%e7%9b%98%e5%b9%b6%e6%9f%a5%e7%9c%8b%e8%ae%be%e5%a4%87%e5%8f%b7&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;diskutil list&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;确认你的 U 盘设备号（如 &lt;code&gt;/dev/disk2&lt;/code&gt;），&lt;strong&gt;请替换下面命令中的设备号！&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 class=&#34;heading&#34; id=&#34;2-格式化-u-盘为-exfat--gpt&#34;&gt;&#xA;  🔹2. 格式化 U 盘为 ExFAT + GPT&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#2-%e6%a0%bc%e5%bc%8f%e5%8c%96-u-%e7%9b%98%e4%b8%ba-exfat--gpt&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;diskutil eraseDisk ExFAT WIN11 GPT /dev/disk2&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;code&gt;WIN11&lt;/code&gt; 为卷标名，可自定义。ExFAT 支持大文件写入。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>VSCode &amp; Vim以及我们赖以生存的编辑器</title>
-      <link>https://zac2049.github.io/posts/vscodevim%E4%BB%A5%E5%8F%8A%E6%88%91%E4%BB%AC%E8%B5%96%E4%BB%A5%E7%94%9F%E5%AD%98%E7%9A%84%E7%BC%96%E8%BE%91/</link>
-      <pubDate>Fri, 09 May 2025 10:00:00 +0800</pubDate>
-      <guid>https://zac2049.github.io/posts/vscodevim%E4%BB%A5%E5%8F%8A%E6%88%91%E4%BB%AC%E8%B5%96%E4%BB%A5%E7%94%9F%E5%AD%98%E7%9A%84%E7%BC%96%E8%BE%91/</guid>
-      <description>&lt;h2 class=&#34;heading&#34; id=&#34;vscode-常用快捷键o3-回答&#34;&gt;&#xA;  VSCode 常用快捷键（O3 回答）&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#vscode-%e5%b8%b8%e7%94%a8%e5%bf%ab%e6%8d%b7%e9%94%aeo3-%e5%9b%9e%e7%ad%94&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&#xA;&lt;div class=&#34;table-outer&#34;&gt;&#xA;    &lt;table&gt;&#xA;        &lt;thead&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;th style=&#34;text-align: right&#34;&gt;排名&lt;/th&gt;&#xA;                &lt;th&gt;常用操作&lt;/th&gt;&#xA;                &lt;th&gt;VS Code 快捷键&lt;sup&gt;Win/Linux (Mac)&lt;/sup&gt;&lt;/th&gt;&#xA;                &lt;th&gt;Vim 内建等效操作&lt;/th&gt;&#xA;            &lt;/tr&gt;&#xA;        &lt;/thead&gt;&#xA;        &lt;tbody&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td style=&#34;text-align: right&#34;&gt;1&lt;/td&gt;&#xA;                &lt;td&gt;&lt;strong&gt;多光标：选下一处/全部匹配&lt;/strong&gt;&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;Ctrl +D&lt;/code&gt; / &lt;code&gt;Ctrl +Shift +L&lt;/code&gt; (&lt;code&gt;⌘ +D&lt;/code&gt; / &lt;code&gt;⌘ +Shift +L&lt;/code&gt;)&lt;/td&gt;&#xA;                &lt;td&gt;&lt;kbd&gt;Ctrl-v&lt;/kbd&gt; 列块选 → &lt;kbd&gt;j/k&lt;/kbd&gt; 移动 → &lt;kbd&gt;A/I&lt;/kbd&gt; 统一编辑；或 &lt;code&gt;/pattern&lt;/code&gt; → &lt;code&gt;:g//norm …&lt;/code&gt;&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td style=&#34;text-align: right&#34;&gt;2&lt;/td&gt;&#xA;                &lt;td&gt;&lt;strong&gt;命令面板&lt;/strong&gt;&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;Ctrl +Shift +P&lt;/code&gt; (&lt;code&gt;⌘ +Shift +P&lt;/code&gt;)&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;:&lt;/code&gt; 进入命令行；&lt;code&gt;q:&lt;/code&gt; 打开历史&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td style=&#34;text-align: right&#34;&gt;3&lt;/td&gt;&#xA;                &lt;td&gt;&lt;strong&gt;快速打开文件&lt;/strong&gt;&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;Ctrl +P&lt;/code&gt; (&lt;code&gt;⌘ +P&lt;/code&gt;)&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;:e path&amp;lt;Tab&amp;gt;&lt;/code&gt; 模糊补全，或 &lt;code&gt;:find {file}&lt;/code&gt;&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td style=&#34;text-align: right&#34;&gt;4&lt;/td&gt;&#xA;                &lt;td&gt;&lt;strong&gt;行/块注释切换&lt;/strong&gt;&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;Ctrl +/&lt;/code&gt; (&lt;code&gt;⌘ +/&lt;/code&gt;)&lt;/td&gt;&#xA;                &lt;td&gt;视觉模式选择 → &lt;code&gt;gc&lt;/code&gt;（需安装 surround/commentary；原生可用 &lt;code&gt;:s/^/\/\//&lt;/code&gt; 等批量）&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td style=&#34;text-align: right&#34;&gt;5&lt;/td&gt;&#xA;                &lt;td&gt;&lt;strong&gt;复制/删除整行&lt;/strong&gt;&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;Shift +Alt +↓ / ↑&lt;/code&gt; 复制；&lt;code&gt;Ctrl +Shift +K&lt;/code&gt; 删除 (&lt;code&gt;⌥ +Shift +↓ / ↑&lt;/code&gt;，&lt;code&gt;⌘ +Shift +K&lt;/code&gt;)&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;yy p&lt;/code&gt; 复制行；&lt;code&gt;dd&lt;/code&gt; 删除行&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td style=&#34;text-align: right&#34;&gt;6&lt;/td&gt;&#xA;                &lt;td&gt;&lt;strong&gt;移动行上下&lt;/strong&gt;&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;Alt +↓ / ↑&lt;/code&gt; (&lt;code&gt;⌥ +↓ / ↑&lt;/code&gt;)&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;:m+1&lt;/code&gt; / &lt;code&gt;:m-2&lt;/code&gt;；可在可视行模式 &lt;code&gt;V&lt;/code&gt; 后用 &lt;code&gt;J/K&lt;/code&gt;&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td style=&#34;text-align: right&#34;&gt;7&lt;/td&gt;&#xA;                &lt;td&gt;&lt;strong&gt;全文件搜索&lt;/strong&gt;&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;Ctrl +Shift +F&lt;/code&gt; (&lt;code&gt;⌘ +Shift +F&lt;/code&gt;)&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;:vimgrep /pattern/ **/*&lt;/code&gt; → &lt;code&gt;:copen&lt;/code&gt;&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td style=&#34;text-align: right&#34;&gt;8&lt;/td&gt;&#xA;                &lt;td&gt;&lt;strong&gt;当前文件内查找&lt;/strong&gt;&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;Ctrl +F&lt;/code&gt; (&lt;code&gt;⌘ +F&lt;/code&gt;)&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;/pattern&lt;/code&gt;；&lt;code&gt;n/N&lt;/code&gt; 继续&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td style=&#34;text-align: right&#34;&gt;9&lt;/td&gt;&#xA;                &lt;td&gt;&lt;strong&gt;批量替换&lt;/strong&gt;&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;Ctrl +H&lt;/code&gt; (&lt;code&gt;⌘ +Alt +F&lt;/code&gt;)&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;:%s/old/new/gc&lt;/code&gt;&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td style=&#34;text-align: right&#34;&gt;10&lt;/td&gt;&#xA;                &lt;td&gt;&lt;strong&gt;格式化文档&lt;/strong&gt;&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;Shift +Alt +F&lt;/code&gt; (&lt;code&gt;⌥ +Shift +F&lt;/code&gt;)&lt;/td&gt;&#xA;                &lt;td&gt;依据语言插件：&lt;code&gt;gg=G&lt;/code&gt;（缩进格式），或外部 LSP &lt;code&gt;:!clang-format&lt;/code&gt; 等&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td style=&#34;text-align: right&#34;&gt;11&lt;/td&gt;&#xA;                &lt;td&gt;&lt;strong&gt;跳到定义 / 返回&lt;/strong&gt;&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;F12&lt;/code&gt; / &lt;code&gt;Alt +←&lt;/code&gt; (&lt;code&gt;⌘ +点击&lt;/code&gt; / &lt;code&gt;⌃ +-&lt;/code&gt;)&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;gd&lt;/code&gt; 跳定义，&lt;code&gt;Ctrl-o&lt;/code&gt; 回退&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td style=&#34;text-align: right&#34;&gt;12&lt;/td&gt;&#xA;                &lt;td&gt;&lt;strong&gt;重命名符号&lt;/strong&gt;&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;F2&lt;/code&gt;&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;:IncRename&lt;/code&gt;（Neovim 新命令）或插件 &lt;em&gt;coc.nvim&lt;/em&gt; &lt;code&gt;gr&lt;/code&gt;；原生可 &lt;code&gt;:%s/&amp;lt;C-r&amp;gt;&amp;lt;C-w&amp;gt;/new/gc&lt;/code&gt;&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td style=&#34;text-align: right&#34;&gt;13&lt;/td&gt;&#xA;                &lt;td&gt;&lt;strong&gt;切换编辑器标签&lt;/strong&gt;&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;Ctrl +PgUp/PgDn&lt;/code&gt; (&lt;code&gt;⌘ +⌥ +←/→&lt;/code&gt;)&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;:bn&lt;/code&gt; / &lt;code&gt;:bp&lt;/code&gt;，或 &lt;code&gt;gt&lt;/code&gt; / &lt;code&gt;gT&lt;/code&gt;&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td style=&#34;text-align: right&#34;&gt;14&lt;/td&gt;&#xA;                &lt;td&gt;&lt;strong&gt;打开内置终端&lt;/strong&gt;&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;Ctrl +`&lt;/code&gt; (&lt;code&gt;⌃ +` &lt;/code&gt;)&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;:terminal&lt;/code&gt; 分屏终端&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td style=&#34;text-align: right&#34;&gt;15&lt;/td&gt;&#xA;                &lt;td&gt;&lt;strong&gt;折叠/展开代码块&lt;/strong&gt;&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;Ctrl +Shift +[ / ]&lt;/code&gt; (&lt;code&gt;⌥ +⌘ +[ / ]&lt;/code&gt;)&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;zc&lt;/code&gt; 折叠，&lt;code&gt;zo&lt;/code&gt; 展开；&lt;code&gt;zM&lt;/code&gt; / &lt;code&gt;zR&lt;/code&gt; 全折/全展&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;        &lt;/tbody&gt;&#xA;    &lt;/table&gt;&#xA;&lt;/div&gt;&lt;h3 class=&#34;heading&#34; id=&#34;别忽视-vs-code-自带的三板斧&#34;&gt;&#xA;  别忽视 VS Code 自带的“三板斧”&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#%e5%88%ab%e5%bf%bd%e8%a7%86-vs-code-%e8%87%aa%e5%b8%a6%e7%9a%84%e4%b8%89%e6%9d%bf%e6%96%a7&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&#xA;&lt;div class=&#34;table-outer&#34;&gt;&#xA;    &lt;table&gt;&#xA;        &lt;thead&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;th&gt;功能&lt;/th&gt;&#xA;                &lt;th&gt;默认快捷键 (Win/Linux)&lt;/th&gt;&#xA;                &lt;th&gt;强在哪&lt;/th&gt;&#xA;            &lt;/tr&gt;&#xA;        &lt;/thead&gt;&#xA;        &lt;tbody&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td&gt;&lt;strong&gt;多光标&lt;/strong&gt;&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;Alt+Click&lt;/code&gt; 选点；&lt;code&gt;Ctrl+D&lt;/code&gt; 选下一处；&lt;code&gt;Ctrl+Shift+L&lt;/code&gt; 选全部&lt;/td&gt;&#xA;                &lt;td&gt;同时改变量名/声明最简方式&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td&gt;&lt;strong&gt;命令面板&lt;/strong&gt;&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;Ctrl+Shift+P&lt;/code&gt;&lt;/td&gt;&#xA;                &lt;td&gt;所有命令即时 fuzzy 搜索&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;            &lt;tr&gt;&#xA;                &lt;td&gt;&lt;strong&gt;全局跳转&lt;/strong&gt;&lt;/td&gt;&#xA;                &lt;td&gt;&lt;code&gt;Ctrl+T&lt;/code&gt; 查看符号；&lt;code&gt;Ctrl+P&lt;/code&gt; 模糊打开文件&lt;/td&gt;&#xA;                &lt;td&gt;不需要第三方插件也像 IDE&lt;/td&gt;&#xA;            &lt;/tr&gt;&#xA;        &lt;/tbody&gt;&#xA;    &lt;/table&gt;&#xA;&lt;/div&gt;</description>
-    </item>
-    <item>
-      <title>浅识扩散模型</title>
-      <link>https://zac2049.github.io/posts/%E6%B5%85%E8%AF%86%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B/</link>
-      <pubDate>Fri, 09 May 2025 10:00:00 +0800</pubDate>
-      <guid>https://zac2049.github.io/posts/%E6%B5%85%E8%AF%86%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B/</guid>
-      <description>&lt;h2 class=&#34;heading&#34; id=&#34;1-ddpm的核心思想&#34;&gt;&#xA;  1. DDPM的核心思想&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#1-ddpm%e7%9a%84%e6%a0%b8%e5%bf%83%e6%80%9d%e6%83%b3&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;DDPM是一种基于概率的生成模型，其核心思想是通过模拟一个&lt;strong&gt;前向扩散过程&lt;/strong&gt;（逐渐向数据添加噪声）和一个&lt;strong&gt;逆向去噪过程&lt;/strong&gt;（从噪声恢复数据）来生成高质量样本。DDPM的训练目标是学习逆向过程的概率分布，使其能够从纯噪声中逐步生成逼真的样本。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;前向过程&lt;/strong&gt;（Forward Process）：从真实数据 $ x_0 $ 开始，逐步添加高斯噪声，经过 $ T $ 步后，数据变成近似的各向同性高斯噪声。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;逆向过程&lt;/strong&gt;（Reverse Process）：从高斯噪声 $ x_T $ 开始，逐步去噪，恢复到原始数据 $ x_0 $。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;DDPM的关键是逆向过程的概率分布 $ p_\theta(x_{t-1}|x_t) $ 难以直接建模，因此通过训练一个神经网络来逼近它，并通过优化一个变分下界（variational lower bound）来学习参数。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;2-前向扩散过程的推导&#34;&gt;&#xA;  2. 前向扩散过程的推导&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#2-%e5%89%8d%e5%90%91%e6%89%a9%e6%95%a3%e8%bf%87%e7%a8%8b%e7%9a%84%e6%8e%a8%e5%af%bc&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;h3 class=&#34;heading&#34; id=&#34;21-前向过程的定义&#34;&gt;&#xA;  2.1 前向过程的定义&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#21-%e5%89%8d%e5%90%91%e8%bf%87%e7%a8%8b%e7%9a%84%e5%ae%9a%e4%b9%89&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;前向过程是一个马尔可夫链，定义为从真实数据 $ x_0 $ 到噪声 $ x_T $ 的逐步加噪过程。每一步添加一个高斯噪声，形式为：&lt;/p&gt;&#xA;&#xA;$$ q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1-\beta_t} x_{t-1}, \beta_t I) $$&#xA;&#xA;&#xA;&lt;p&gt;其中：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;$ x_t $ 是第 $ t $ 步的加噪数据。&lt;/li&gt;&#xA;&lt;li&gt;$ \beta_t \in (0, 1) $ 是第 $ t $ 步的噪声调度参数，控制每一步添加的噪声量。&lt;/li&gt;&#xA;&lt;li&gt;$ \sqrt{1-\beta_t} x_{t-1} $ 是均值，意味着数据被稍微缩放。&lt;/li&gt;&#xA;&lt;li&gt;$ \beta_t I $ 是方差，表示添加的噪声强度。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;直观来说，每一步都在 $ x_{t-1} $ 的基础上乘以一个小于1的系数（使信号衰减），并加上一个高斯噪声。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>我的第一篇文章</title>
-      <link>https://zac2049.github.io/posts/my-first-post/</link>
-      <pubDate>Sun, 23 Mar 2025 10:00:00 +0800</pubDate>
-      <guid>https://zac2049.github.io/posts/my-first-post/</guid>
-      <description>&lt;h1 class=&#34;heading&#34; id=&#34;hiii&#34;&gt;&#xA;  Hiii&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#hiii&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;welcome-to-my-blog&#34;&gt;&#xA;  Welcome to My Blog!&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#welcome-to-my-blog&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;Hello and welcome to my new blog! This is my very first post, and I&amp;rsquo;m excited to share my thoughts, experiences, and knowledge with you all. This blog will be a place where I document my journey and share interesting discoveries along the way.&lt;/p&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;markdown-examples&#34;&gt;&#xA;  Markdown Examples&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#markdown-examples&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;Here are some examples of what you can do with Markdown formatting:&lt;/p&gt;&#xA;&lt;h3 class=&#34;heading&#34; id=&#34;headers&#34;&gt;&#xA;  Headers&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#headers&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;As you can see, I&amp;rsquo;m using different levels of headers to organize content.&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>笔记 on Hedgehugger Land</title><link>https://zac2049.github.io/categories/%E7%AC%94%E8%AE%B0/</link><description>Recent content in 笔记 on Hedgehugger Land</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 09 May 2025 10:00:00 +0800</lastBuildDate><atom:link href="https://zac2049.github.io/categories/%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml"/><item><title>Mac 上制作 Win11 安装 U 盘</title><link>https://zac2049.github.io/posts/mac%E4%B8%8A%E5%88%B6%E4%BD%9Cwin11%E7%9A%84u%E7%9B%98/</link><pubDate>Fri, 09 May 2025 10:00:00 +0800</pubDate><guid>https://zac2049.github.io/posts/mac%E4%B8%8A%E5%88%B6%E4%BD%9Cwin11%E7%9A%84u%E7%9B%98/</guid><description>&lt;p>下面是**基于你遇到的问题（install.wim 太大，&lt;code>mv&lt;/code> 失败）**之后，&lt;strong>修正优化的完整终端操作步骤&lt;/strong>。我们将采取 &lt;strong>先复制 install.wim 到本地磁盘，再使用 &lt;code>wimlib&lt;/code> 分割后写入 U 盘&lt;/strong> 的方式，确保整个流程稳定、可靠，适配 Windows 11 的安装要求。&lt;/p>
+&lt;hr>
+&lt;h2 class="heading" id="-mac-上制作-win11-安装-u-盘分割-installwim适配-4gb">
+ ✅ Mac 上制作 Win11 安装 U 盘（分割 install.wim，适配 &amp;gt;4GB）
+ &lt;a class="anchor" href="#-mac-%e4%b8%8a%e5%88%b6%e4%bd%9c-win11-%e5%ae%89%e8%a3%85-u-%e7%9b%98%e5%88%86%e5%89%b2-installwim%e9%80%82%e9%85%8d-4gb">#&lt;/a>
+&lt;/h2>
+&lt;h3 class="heading" id="-前提准备">
+ 📦 前提准备
+ &lt;a class="anchor" href="#-%e5%89%8d%e6%8f%90%e5%87%86%e5%a4%87">#&lt;/a>
+&lt;/h3>
+
+&lt;div class="table-outer">
+ &lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>项目&lt;/th>
+ &lt;th>要求&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>系统镜像&lt;/td>
+ &lt;td>下载 Win11 官方 ISO&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>U 盘&lt;/td>
+ &lt;td>≥8GB，建议使用 &lt;strong>ExFAT&lt;/strong> 格式，避免 FAT32 限制&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>工具&lt;/td>
+ &lt;td>Terminal，Homebrew，wimlib&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>文件路径&lt;/td>
+ &lt;td>本文示例路径使用：&lt;code>/Volumes/WIN11&lt;/code> 为 U 盘，&lt;code>~/Desktop/install.wim&lt;/code> 为中转文件&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+ &lt;/table>
+&lt;/div>&lt;hr>
+&lt;h2 class="heading" id="-全流程操作步骤">
+ 🛠️ 全流程操作步骤
+ &lt;a class="anchor" href="#-%e5%85%a8%e6%b5%81%e7%a8%8b%e6%93%8d%e4%bd%9c%e6%ad%a5%e9%aa%a4">#&lt;/a>
+&lt;/h2>
+&lt;h3 class="heading" id="1-插入-u-盘并查看设备号">
+ 🔹1. 插入 U 盘并查看设备号
+ &lt;a class="anchor" href="#1-%e6%8f%92%e5%85%a5-u-%e7%9b%98%e5%b9%b6%e6%9f%a5%e7%9c%8b%e8%ae%be%e5%a4%87%e5%8f%b7">#&lt;/a>
+&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>diskutil list
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>确认你的 U 盘设备号（如 &lt;code>/dev/disk2&lt;/code>），&lt;strong>请替换下面命令中的设备号！&lt;/strong>&lt;/p>
+&lt;hr>
+&lt;h3 class="heading" id="2-格式化-u-盘为-exfat--gpt">
+ 🔹2. 格式化 U 盘为 ExFAT + GPT
+ &lt;a class="anchor" href="#2-%e6%a0%bc%e5%bc%8f%e5%8c%96-u-%e7%9b%98%e4%b8%ba-exfat--gpt">#&lt;/a>
+&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>diskutil eraseDisk ExFAT WIN11 GPT /dev/disk2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
+&lt;p>&lt;code>WIN11&lt;/code> 为卷标名，可自定义。ExFAT 支持大文件写入。&lt;/p></description></item><item><title>VSCode &amp; Vim以及我们赖以生存的编辑器</title><link>https://zac2049.github.io/posts/vscodevim%E4%BB%A5%E5%8F%8A%E6%88%91%E4%BB%AC%E8%B5%96%E4%BB%A5%E7%94%9F%E5%AD%98%E7%9A%84%E7%BC%96%E8%BE%91/</link><pubDate>Fri, 09 May 2025 10:00:00 +0800</pubDate><guid>https://zac2049.github.io/posts/vscodevim%E4%BB%A5%E5%8F%8A%E6%88%91%E4%BB%AC%E8%B5%96%E4%BB%A5%E7%94%9F%E5%AD%98%E7%9A%84%E7%BC%96%E8%BE%91/</guid><description>&lt;h2 class="heading" id="vscode-常用快捷键o3-回答">
+ VSCode 常用快捷键（O3 回答）
+ &lt;a class="anchor" href="#vscode-%e5%b8%b8%e7%94%a8%e5%bf%ab%e6%8d%b7%e9%94%aeo3-%e5%9b%9e%e7%ad%94">#&lt;/a>
+&lt;/h2>
+
+&lt;div class="table-outer">
+ &lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th style="text-align: right">排名&lt;/th>
+ &lt;th>常用操作&lt;/th>
+ &lt;th>VS Code 快捷键&lt;sup>Win/Linux (Mac)&lt;/sup>&lt;/th>
+ &lt;th>Vim 内建等效操作&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td style="text-align: right">1&lt;/td>
+ &lt;td>&lt;strong>多光标：选下一处/全部匹配&lt;/strong>&lt;/td>
+ &lt;td>&lt;code>Ctrl +D&lt;/code> / &lt;code>Ctrl +Shift +L&lt;/code> (&lt;code>⌘ +D&lt;/code> / &lt;code>⌘ +Shift +L&lt;/code>)&lt;/td>
+ &lt;td>&lt;kbd>Ctrl-v&lt;/kbd> 列块选 → &lt;kbd>j/k&lt;/kbd> 移动 → &lt;kbd>A/I&lt;/kbd> 统一编辑；或 &lt;code>/pattern&lt;/code> → &lt;code>:g//norm …&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td style="text-align: right">2&lt;/td>
+ &lt;td>&lt;strong>命令面板&lt;/strong>&lt;/td>
+ &lt;td>&lt;code>Ctrl +Shift +P&lt;/code> (&lt;code>⌘ +Shift +P&lt;/code>)&lt;/td>
+ &lt;td>&lt;code>:&lt;/code> 进入命令行；&lt;code>q:&lt;/code> 打开历史&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td style="text-align: right">3&lt;/td>
+ &lt;td>&lt;strong>快速打开文件&lt;/strong>&lt;/td>
+ &lt;td>&lt;code>Ctrl +P&lt;/code> (&lt;code>⌘ +P&lt;/code>)&lt;/td>
+ &lt;td>&lt;code>:e path&amp;lt;Tab&amp;gt;&lt;/code> 模糊补全，或 &lt;code>:find {file}&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td style="text-align: right">4&lt;/td>
+ &lt;td>&lt;strong>行/块注释切换&lt;/strong>&lt;/td>
+ &lt;td>&lt;code>Ctrl +/&lt;/code> (&lt;code>⌘ +/&lt;/code>)&lt;/td>
+ &lt;td>视觉模式选择 → &lt;code>gc&lt;/code>（需安装 surround/commentary；原生可用 &lt;code>:s/^/\/\//&lt;/code> 等批量）&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td style="text-align: right">5&lt;/td>
+ &lt;td>&lt;strong>复制/删除整行&lt;/strong>&lt;/td>
+ &lt;td>&lt;code>Shift +Alt +↓ / ↑&lt;/code> 复制；&lt;code>Ctrl +Shift +K&lt;/code> 删除 (&lt;code>⌥ +Shift +↓ / ↑&lt;/code>，&lt;code>⌘ +Shift +K&lt;/code>)&lt;/td>
+ &lt;td>&lt;code>yy p&lt;/code> 复制行；&lt;code>dd&lt;/code> 删除行&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td style="text-align: right">6&lt;/td>
+ &lt;td>&lt;strong>移动行上下&lt;/strong>&lt;/td>
+ &lt;td>&lt;code>Alt +↓ / ↑&lt;/code> (&lt;code>⌥ +↓ / ↑&lt;/code>)&lt;/td>
+ &lt;td>&lt;code>:m+1&lt;/code> / &lt;code>:m-2&lt;/code>；可在可视行模式 &lt;code>V&lt;/code> 后用 &lt;code>J/K&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td style="text-align: right">7&lt;/td>
+ &lt;td>&lt;strong>全文件搜索&lt;/strong>&lt;/td>
+ &lt;td>&lt;code>Ctrl +Shift +F&lt;/code> (&lt;code>⌘ +Shift +F&lt;/code>)&lt;/td>
+ &lt;td>&lt;code>:vimgrep /pattern/ **/*&lt;/code> → &lt;code>:copen&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td style="text-align: right">8&lt;/td>
+ &lt;td>&lt;strong>当前文件内查找&lt;/strong>&lt;/td>
+ &lt;td>&lt;code>Ctrl +F&lt;/code> (&lt;code>⌘ +F&lt;/code>)&lt;/td>
+ &lt;td>&lt;code>/pattern&lt;/code>；&lt;code>n/N&lt;/code> 继续&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td style="text-align: right">9&lt;/td>
+ &lt;td>&lt;strong>批量替换&lt;/strong>&lt;/td>
+ &lt;td>&lt;code>Ctrl +H&lt;/code> (&lt;code>⌘ +Alt +F&lt;/code>)&lt;/td>
+ &lt;td>&lt;code>:%s/old/new/gc&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td style="text-align: right">10&lt;/td>
+ &lt;td>&lt;strong>格式化文档&lt;/strong>&lt;/td>
+ &lt;td>&lt;code>Shift +Alt +F&lt;/code> (&lt;code>⌥ +Shift +F&lt;/code>)&lt;/td>
+ &lt;td>依据语言插件：&lt;code>gg=G&lt;/code>（缩进格式），或外部 LSP &lt;code>:!clang-format&lt;/code> 等&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td style="text-align: right">11&lt;/td>
+ &lt;td>&lt;strong>跳到定义 / 返回&lt;/strong>&lt;/td>
+ &lt;td>&lt;code>F12&lt;/code> / &lt;code>Alt +←&lt;/code> (&lt;code>⌘ +点击&lt;/code> / &lt;code>⌃ +-&lt;/code>)&lt;/td>
+ &lt;td>&lt;code>gd&lt;/code> 跳定义，&lt;code>Ctrl-o&lt;/code> 回退&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td style="text-align: right">12&lt;/td>
+ &lt;td>&lt;strong>重命名符号&lt;/strong>&lt;/td>
+ &lt;td>&lt;code>F2&lt;/code>&lt;/td>
+ &lt;td>&lt;code>:IncRename&lt;/code>（Neovim 新命令）或插件 &lt;em>coc.nvim&lt;/em> &lt;code>gr&lt;/code>；原生可 &lt;code>:%s/&amp;lt;C-r&amp;gt;&amp;lt;C-w&amp;gt;/new/gc&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td style="text-align: right">13&lt;/td>
+ &lt;td>&lt;strong>切换编辑器标签&lt;/strong>&lt;/td>
+ &lt;td>&lt;code>Ctrl +PgUp/PgDn&lt;/code> (&lt;code>⌘ +⌥ +←/→&lt;/code>)&lt;/td>
+ &lt;td>&lt;code>:bn&lt;/code> / &lt;code>:bp&lt;/code>，或 &lt;code>gt&lt;/code> / &lt;code>gT&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td style="text-align: right">14&lt;/td>
+ &lt;td>&lt;strong>打开内置终端&lt;/strong>&lt;/td>
+ &lt;td>&lt;code>Ctrl +`&lt;/code> (&lt;code>⌃ +` &lt;/code>)&lt;/td>
+ &lt;td>&lt;code>:terminal&lt;/code> 分屏终端&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td style="text-align: right">15&lt;/td>
+ &lt;td>&lt;strong>折叠/展开代码块&lt;/strong>&lt;/td>
+ &lt;td>&lt;code>Ctrl +Shift +[ / ]&lt;/code> (&lt;code>⌥ +⌘ +[ / ]&lt;/code>)&lt;/td>
+ &lt;td>&lt;code>zc&lt;/code> 折叠，&lt;code>zo&lt;/code> 展开；&lt;code>zM&lt;/code> / &lt;code>zR&lt;/code> 全折/全展&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+ &lt;/table>
+&lt;/div>&lt;h3 class="heading" id="别忽视-vs-code-自带的三板斧">
+ 别忽视 VS Code 自带的“三板斧”
+ &lt;a class="anchor" href="#%e5%88%ab%e5%bf%bd%e8%a7%86-vs-code-%e8%87%aa%e5%b8%a6%e7%9a%84%e4%b8%89%e6%9d%bf%e6%96%a7">#&lt;/a>
+&lt;/h3>
+
+&lt;div class="table-outer">
+ &lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>功能&lt;/th>
+ &lt;th>默认快捷键 (Win/Linux)&lt;/th>
+ &lt;th>强在哪&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>&lt;strong>多光标&lt;/strong>&lt;/td>
+ &lt;td>&lt;code>Alt+Click&lt;/code> 选点；&lt;code>Ctrl+D&lt;/code> 选下一处；&lt;code>Ctrl+Shift+L&lt;/code> 选全部&lt;/td>
+ &lt;td>同时改变量名/声明最简方式&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;strong>命令面板&lt;/strong>&lt;/td>
+ &lt;td>&lt;code>Ctrl+Shift+P&lt;/code>&lt;/td>
+ &lt;td>所有命令即时 fuzzy 搜索&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;strong>全局跳转&lt;/strong>&lt;/td>
+ &lt;td>&lt;code>Ctrl+T&lt;/code> 查看符号；&lt;code>Ctrl+P&lt;/code> 模糊打开文件&lt;/td>
+ &lt;td>不需要第三方插件也像 IDE&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+ &lt;/table>
+&lt;/div></description></item><item><title>浅识扩散模型</title><link>https://zac2049.github.io/posts/%E6%B5%85%E8%AF%86%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B/</link><pubDate>Fri, 09 May 2025 10:00:00 +0800</pubDate><guid>https://zac2049.github.io/posts/%E6%B5%85%E8%AF%86%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B/</guid><description>&lt;h2 class="heading" id="1-ddpm的核心思想">
+ 1. DDPM的核心思想
+ &lt;a class="anchor" href="#1-ddpm%e7%9a%84%e6%a0%b8%e5%bf%83%e6%80%9d%e6%83%b3">#&lt;/a>
+&lt;/h2>
+&lt;p>DDPM是一种基于概率的生成模型，其核心思想是通过模拟一个&lt;strong>前向扩散过程&lt;/strong>（逐渐向数据添加噪声）和一个&lt;strong>逆向去噪过程&lt;/strong>（从噪声恢复数据）来生成高质量样本。DDPM的训练目标是学习逆向过程的概率分布，使其能够从纯噪声中逐步生成逼真的样本。&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>前向过程&lt;/strong>（Forward Process）：从真实数据 $ x_0 $ 开始，逐步添加高斯噪声，经过 $ T $ 步后，数据变成近似的各向同性高斯噪声。&lt;/li>
+&lt;li>&lt;strong>逆向过程&lt;/strong>（Reverse Process）：从高斯噪声 $ x_T $ 开始，逐步去噪，恢复到原始数据 $ x_0 $。&lt;/li>
+&lt;/ul>
+&lt;p>DDPM的关键是逆向过程的概率分布 $ p_\theta(x_{t-1}|x_t) $ 难以直接建模，因此通过训练一个神经网络来逼近它，并通过优化一个变分下界（variational lower bound）来学习参数。&lt;/p>
+&lt;hr>
+&lt;h2 class="heading" id="2-前向扩散过程的推导">
+ 2. 前向扩散过程的推导
+ &lt;a class="anchor" href="#2-%e5%89%8d%e5%90%91%e6%89%a9%e6%95%a3%e8%bf%87%e7%a8%8b%e7%9a%84%e6%8e%a8%e5%af%bc">#&lt;/a>
+&lt;/h2>
+&lt;h3 class="heading" id="21-前向过程的定义">
+ 2.1 前向过程的定义
+ &lt;a class="anchor" href="#21-%e5%89%8d%e5%90%91%e8%bf%87%e7%a8%8b%e7%9a%84%e5%ae%9a%e4%b9%89">#&lt;/a>
+&lt;/h3>
+&lt;p>前向过程是一个马尔可夫链，定义为从真实数据 $ x_0 $ 到噪声 $ x_T $ 的逐步加噪过程。每一步添加一个高斯噪声，形式为：&lt;/p>
+
+$$ q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1-\beta_t} x_{t-1}, \beta_t I) $$
+
+
+&lt;p>其中：&lt;/p>
+&lt;ul>
+&lt;li>$ x_t $ 是第 $ t $ 步的加噪数据。&lt;/li>
+&lt;li>$ \beta_t \in (0, 1) $ 是第 $ t $ 步的噪声调度参数，控制每一步添加的噪声量。&lt;/li>
+&lt;li>$ \sqrt{1-\beta_t} x_{t-1} $ 是均值，意味着数据被稍微缩放。&lt;/li>
+&lt;li>$ \beta_t I $ 是方差，表示添加的噪声强度。&lt;/li>
+&lt;/ul>
+&lt;p>直观来说，每一步都在 $ x_{t-1} $ 的基础上乘以一个小于1的系数（使信号衰减），并加上一个高斯噪声。&lt;/p></description></item><item><title>我的第一篇文章</title><link>https://zac2049.github.io/posts/my-first-post/</link><pubDate>Sun, 23 Mar 2025 10:00:00 +0800</pubDate><guid>https://zac2049.github.io/posts/my-first-post/</guid><description>&lt;h1 class="heading" id="hiii">
+ Hiii
+ &lt;a class="anchor" href="#hiii">#&lt;/a>
+&lt;/h1>
+&lt;h2 class="heading" id="welcome-to-my-blog">
+ Welcome to My Blog!
+ &lt;a class="anchor" href="#welcome-to-my-blog">#&lt;/a>
+&lt;/h2>
+&lt;p>Hello and welcome to my new blog! This is my very first post, and I&amp;rsquo;m excited to share my thoughts, experiences, and knowledge with you all. This blog will be a place where I document my journey and share interesting discoveries along the way.&lt;/p>
+&lt;h2 class="heading" id="markdown-examples">
+ Markdown Examples
+ &lt;a class="anchor" href="#markdown-examples">#&lt;/a>
+&lt;/h2>
+&lt;p>Here are some examples of what you can do with Markdown formatting:&lt;/p>
+&lt;h3 class="heading" id="headers">
+ Headers
+ &lt;a class="anchor" href="#headers">#&lt;/a>
+&lt;/h3>
+&lt;p>As you can see, I&amp;rsquo;m using different levels of headers to organize content.&lt;/p></description></item></channel></rss>
