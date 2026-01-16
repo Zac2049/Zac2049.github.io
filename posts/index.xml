@@ -45,15 +45,21 @@
  🔹1. 插入 U 盘并查看设备号
  &lt;a class="anchor" href="#1-%e6%8f%92%e5%85%a5-u-%e7%9b%98%e5%b9%b6%e6%9f%a5%e7%9c%8b%e8%ae%be%e5%a4%87%e5%8f%b7">#&lt;/a>
 &lt;/h3>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>diskutil list
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>确认你的 U 盘设备号（如 &lt;code>/dev/disk2&lt;/code>），&lt;strong>请替换下面命令中的设备号！&lt;/strong>&lt;/p>
+&lt;div class="code-block">
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>diskutil list&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ &lt;button class="copy-code-button">copy&lt;/button>
+&lt;/div>
+&lt;p>确认你的 U 盘设备号（如 &lt;code>/dev/disk2&lt;/code>），&lt;strong>请替换下面命令中的设备号！&lt;/strong>&lt;/p>
 &lt;hr>
 &lt;h3 class="heading" id="2-格式化-u-盘为-exfat--gpt">
  🔹2. 格式化 U 盘为 ExFAT + GPT
  &lt;a class="anchor" href="#2-%e6%a0%bc%e5%bc%8f%e5%8c%96-u-%e7%9b%98%e4%b8%ba-exfat--gpt">#&lt;/a>
 &lt;/h3>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>diskutil eraseDisk ExFAT WIN11 GPT /dev/disk2
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
+&lt;div class="code-block">
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>diskutil eraseDisk ExFAT WIN11 GPT /dev/disk2&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ &lt;button class="copy-code-button">copy&lt;/button>
+&lt;/div>
+&lt;blockquote>
 &lt;p>&lt;code>WIN11&lt;/code> 为卷标名，可自定义。ExFAT 支持大文件写入。&lt;/p></description></item><item><title>VSCode &amp; Vim以及我们赖以生存的编辑器</title><link>https://zac2049.github.io/posts/vscodevim%E4%BB%A5%E5%8F%8A%E6%88%91%E4%BB%AC%E8%B5%96%E4%BB%A5%E7%94%9F%E5%AD%98%E7%9A%84%E7%BC%96%E8%BE%91/</link><pubDate>Fri, 09 May 2025 10:00:00 +0800</pubDate><guid>https://zac2049.github.io/posts/vscodevim%E4%BB%A5%E5%8F%8A%E6%88%91%E4%BB%AC%E8%B5%96%E4%BB%A5%E7%94%9F%E5%AD%98%E7%9A%84%E7%BC%96%E8%BE%91/</guid><description>&lt;h2 class="heading" id="vscode-常用快捷键o3-回答">
  VSCode 常用快捷键（O3 回答）
  &lt;a class="anchor" href="#vscode-%e5%b8%b8%e7%94%a8%e5%bf%ab%e6%8d%b7%e9%94%aeo3-%e5%9b%9e%e7%ad%94">#&lt;/a>
