@@ -225,7 +225,7 @@ $$ q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1-\beta_t} x_{t-1}, \beta_t I) $$
 &lt;li>$ \sqrt{1-\beta_t} x_{t-1} $ 是均值，意味着数据被稍微缩放。&lt;/li>
 &lt;li>$ \beta_t I $ 是方差，表示添加的噪声强度。&lt;/li>
 &lt;/ul>
-&lt;p>直观来说，每一步都在 $ x_{t-1} $ 的基础上乘以一个小于1的系数（使信号衰减），并加上一个高斯噪声。&lt;/p></description></item><item><title>我的第一篇文章</title><link>https://zac2049.github.io/posts/my-first-post/</link><pubDate>Sun, 23 Mar 2025 10:00:00 +0800</pubDate><guid>https://zac2049.github.io/posts/my-first-post/</guid><description>&lt;h1 class="heading" id="hiii">
+&lt;p>直观来说，每一步都在 $ x_{t-1} $ 的基础上乘以一个小于1的系数（使信号衰减），并加上一个高斯噪声。&lt;/p></description></item><item><title>next</title><link>https://zac2049.github.io/posts/next/</link><pubDate>Sun, 23 Mar 2025 10:00:00 +0800</pubDate><guid>https://zac2049.github.io/posts/next/</guid><description/></item><item><title>我的第一篇文章</title><link>https://zac2049.github.io/posts/my-first-post/</link><pubDate>Sun, 23 Mar 2025 10:00:00 +0800</pubDate><guid>https://zac2049.github.io/posts/my-first-post/</guid><description>&lt;h1 class="heading" id="hiii">
  Hiii
  &lt;a class="anchor" href="#hiii">#&lt;/a>
 &lt;/h1>
