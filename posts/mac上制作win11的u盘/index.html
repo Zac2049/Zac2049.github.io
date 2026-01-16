@@ -1,23 +1,486 @@
-<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon type=image/ico href=https://zac2049.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://zac2049.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://zac2049.github.io/favicon-32x32.png><link rel=icon type=image/png sizes=192x192 href=https://zac2049.github.io/android-chrome-192x192.png><link rel=apple-touch-icon sizes=180x180 href=https://zac2049.github.io/apple-touch-icon.png><meta name=description content><title>Mac 上制作 Win11 安装 U 盘 | Hedgehugger Land
-</title><link rel=canonical href=https://zac2049.github.io/posts/mac%E4%B8%8A%E5%88%B6%E4%BD%9Cwin11%E7%9A%84u%E7%9B%98/><meta property="og:url" content="https://zac2049.github.io/posts/mac%E4%B8%8A%E5%88%B6%E4%BD%9Cwin11%E7%9A%84u%E7%9B%98/"><meta property="og:site_name" content="Hedgehugger Land"><meta property="og:title" content="Mac 上制作 Win11 安装 U 盘"><meta property="og:description" content="下面是**基于你遇到的问题（install.wim 太大，mv 失败）**之后，修正优化的完整终端操作步骤。我们将采取 先复制 install.wim 到本地磁盘，再使用 wimlib 分割后写入 U 盘 的方式，确保整个流程稳定、可靠，适配 Windows 11 的安装要求。
-✅ Mac 上制作 Win11 安装 U 盘（分割 install.wim，适配 >4GB） # 📦 前提准备 # 项目 要求 系统镜像 下载 Win11 官方 ISO U 盘 ≥8GB，建议使用 ExFAT 格式，避免 FAT32 限制 工具 Terminal，Homebrew，wimlib 文件路径 本文示例路径使用：/Volumes/WIN11 为 U 盘，~/Desktop/install.wim 为中转文件 🛠️ 全流程操作步骤 # 🔹1. 插入 U 盘并查看设备号 # diskutil list copy 确认你的 U 盘设备号（如 /dev/disk2），请替换下面命令中的设备号！
-🔹2. 格式化 U 盘为 ExFAT + GPT # diskutil eraseDisk ExFAT WIN11 GPT /dev/disk2 copy WIN11 为卷标名，可自定义。ExFAT 支持大文件写入。"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-05-09T10:00:00+08:00"><meta property="article:modified_time" content="2025-05-09T10:00:00+08:00"><meta property="article:tag" content="技术"><meta property="article:tag" content="工具"><link rel=stylesheet href=/assets/combined.min.62d01681d225adacee86df270dafcee77c97b3090382b12674dbf3fa180d4749.css media=all></head><body class=auto><div class=content><header><div class=header><h1 class=header-title><a href=https://zac2049.github.io/>Hedgehugger Land</a></h1><div class=header-menu><p class=small><a href=/>/home</a></p><p class=small><a href=/posts>/posts</a></p><p class=small><a href=/tags>/tags</a></p><p class=small><a href=/about>/about</a></p></div></div></header><main class=main><div class=breadcrumbs><a href=/>Home</a><span class=breadcrumbs-separator>/</span><a href=/posts/>Posts</a><span class=breadcrumbs-separator>/</span>
-<a href=/posts/mac%E4%B8%8A%E5%88%B6%E4%BD%9Cwin11%E7%9A%84u%E7%9B%98/>Mac 上制作 Win11 安装 U 盘</a></div><div><article><header class=single-intro-container><h1 class=single-title>Mac 上制作 Win11 安装 U 盘</h1><div class=single-subsummary><div><p class=single-date><time datetime=2025-05-09T10:00:00+08:00>May 9, 2025</time></p></div></div></header><div class=single-content><p>下面是**基于你遇到的问题（install.wim 太大，<code>mv</code> 失败）**之后，<strong>修正优化的完整终端操作步骤</strong>。我们将采取 <strong>先复制 install.wim 到本地磁盘，再使用 <code>wimlib</code> 分割后写入 U 盘</strong> 的方式，确保整个流程稳定、可靠，适配 Windows 11 的安装要求。</p><hr><h2 class=heading id=-mac-上制作-win11-安装-u-盘分割-installwim适配-4gb>✅ Mac 上制作 Win11 安装 U 盘（分割 install.wim，适配 >4GB）
-<a class=anchor href=#-mac-%e4%b8%8a%e5%88%b6%e4%bd%9c-win11-%e5%ae%89%e8%a3%85-u-%e7%9b%98%e5%88%86%e5%89%b2-installwim%e9%80%82%e9%85%8d-4gb>#</a></h2><h3 class=heading id=-前提准备>📦 前提准备
-<a class=anchor href=#-%e5%89%8d%e6%8f%90%e5%87%86%e5%a4%87>#</a></h3><div class=table-outer><table><thead><tr><th>项目</th><th>要求</th></tr></thead><tbody><tr><td>系统镜像</td><td>下载 Win11 官方 ISO</td></tr><tr><td>U 盘</td><td>≥8GB，建议使用 <strong>ExFAT</strong> 格式，避免 FAT32 限制</td></tr><tr><td>工具</td><td>Terminal，Homebrew，wimlib</td></tr><tr><td>文件路径</td><td>本文示例路径使用：<code>/Volumes/WIN11</code> 为 U 盘，<code>~/Desktop/install.wim</code> 为中转文件</td></tr></tbody></table></div><hr><h2 class=heading id=-全流程操作步骤>🛠️ 全流程操作步骤
-<a class=anchor href=#-%e5%85%a8%e6%b5%81%e7%a8%8b%e6%93%8d%e4%bd%9c%e6%ad%a5%e9%aa%a4>#</a></h2><h3 class=heading id=1-插入-u-盘并查看设备号>🔹1. 插入 U 盘并查看设备号
-<a class=anchor href=#1-%e6%8f%92%e5%85%a5-u-%e7%9b%98%e5%b9%b6%e6%9f%a5%e7%9c%8b%e8%ae%be%e5%a4%87%e5%8f%b7>#</a></h3><div class=code-block><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>diskutil list</span></span></code></pre></div><button class=copy-code-button>copy</button></div><p>确认你的 U 盘设备号（如 <code>/dev/disk2</code>），<strong>请替换下面命令中的设备号！</strong></p><hr><h3 class=heading id=2-格式化-u-盘为-exfat--gpt>🔹2. 格式化 U 盘为 ExFAT + GPT
-<a class=anchor href=#2-%e6%a0%bc%e5%bc%8f%e5%8c%96-u-%e7%9b%98%e4%b8%ba-exfat--gpt>#</a></h3><div class=code-block><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>diskutil eraseDisk ExFAT WIN11 GPT /dev/disk2</span></span></code></pre></div><button class=copy-code-button>copy</button></div><blockquote><p><code>WIN11</code> 为卷标名，可自定义。ExFAT 支持大文件写入。</p></blockquote><hr><h3 class=heading id=3-挂载-windows-11-iso-镜像>🔹3. 挂载 Windows 11 ISO 镜像
-<a class=anchor href=#3-%e6%8c%82%e8%bd%bd-windows-11-iso-%e9%95%9c%e5%83%8f>#</a></h3><div class=code-block><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>hdiutil mount ~/Downloads/Win11_*.iso</span></span></code></pre></div><button class=copy-code-button>copy</button></div><blockquote><p>通常会挂载为 <code>/Volumes/PCHA_X64FREO_ZH-CN_DV9</code>（中文 ISO）或类似路径，请记住它。</p></blockquote><hr><h3 class=heading id=4-安装-wimlib如未安装>🔹4. 安装 wimlib（如未安装）
-<a class=anchor href=#4-%e5%ae%89%e8%a3%85-wimlib%e5%a6%82%e6%9c%aa%e5%ae%89%e8%a3%85>#</a></h3><div class=code-block><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>brew install wimlib</span></span></code></pre></div><button class=copy-code-button>copy</button></div><hr><h3 class=heading id=5-复制-installwim-到本地桌面>🔹5. 复制 install.wim 到本地桌面
-<a class=anchor href=#5-%e5%a4%8d%e5%88%b6-installwim-%e5%88%b0%e6%9c%ac%e5%9c%b0%e6%a1%8c%e9%9d%a2>#</a></h3><div class=code-block><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>cp /Volumes/PCHA_X64FREO_ZH-CN_DV9/sources/install.wim ~/Desktop/install.wim</span></span></code></pre></div><button class=copy-code-button>copy</button></div><blockquote><p>📌 不直接写入 U盘，避免失败。</p></blockquote><hr><h3 class=heading id=6-拷贝其他安装文件不包括-installwim>🔹6. 拷贝其他安装文件（不包括 install.wim）
-<a class=anchor href=#6-%e6%8b%b7%e8%b4%9d%e5%85%b6%e4%bb%96%e5%ae%89%e8%a3%85%e6%96%87%e4%bb%b6%e4%b8%8d%e5%8c%85%e6%8b%ac-installwim>#</a></h3><div class=code-block><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>rsync -avh /Volumes/PCHA_X64FREO_ZH-CN_DV9/ /Volumes/WIN11/</span></span></code></pre></div><button class=copy-code-button>copy</button></div><hr><h3 class=heading id=7-分割-installwim-并写入-u-盘>🔹7. 分割 install.wim 并写入 U 盘
-<a class=anchor href=#7-%e5%88%86%e5%89%b2-installwim-%e5%b9%b6%e5%86%99%e5%85%a5-u-%e7%9b%98>#</a></h3><div class=code-block><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>wimlib-imagex split ~/Desktop/install.wim /Volumes/WIN11/sources/install.swm <span style=color:#ae81ff>3800</span></span></span></code></pre></div><button class=copy-code-button>copy</button></div><blockquote><p>将大于 4GB 的 install.wim 分割为多个 install.swm/install2.swm 文件</p></blockquote><hr><h3 class=heading id=8-清理本地临时文件可选>🔹8. 清理本地临时文件（可选）
-<a class=anchor href=#8-%e6%b8%85%e7%90%86%e6%9c%ac%e5%9c%b0%e4%b8%b4%e6%97%b6%e6%96%87%e4%bb%b6%e5%8f%af%e9%80%89>#</a></h3><div class=code-block><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>rm ~/Desktop/install.wim</span></span></code></pre></div><button class=copy-code-button>copy</button></div><hr><h3 class=heading id=9-卸载镜像和弹出-u-盘可选>🔹9. 卸载镜像和弹出 U 盘（可选）
-<a class=anchor href=#9-%e5%8d%b8%e8%bd%bd%e9%95%9c%e5%83%8f%e5%92%8c%e5%bc%b9%e5%87%ba-u-%e7%9b%98%e5%8f%af%e9%80%89>#</a></h3><div class=code-block><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>hdiutil unmount /Volumes/PCHA_X64FREO_ZH-CN_DV9
-</span></span><span style=display:flex><span>diskutil eject /dev/disk2</span></span></code></pre></div><button class=copy-code-button>copy</button></div><hr><h2 class=heading id=-安装时使用说明>✅ 安装时使用说明
-<a class=anchor href=#-%e5%ae%89%e8%a3%85%e6%97%b6%e4%bd%bf%e7%94%a8%e8%af%b4%e6%98%8e>#</a></h2><ol><li>将制作好的 U 盘插入目标电脑</li><li>开机按 <code>F12</code> / <code>ESC</code> / <code>F8</code> 进入启动菜单</li><li>从 USB UEFI 启动</li><li>安装过程会自动识别 <code>install.swm</code> 文件，无需手动干预</li></ol><hr><h2 class=heading id=-总结检查表>✅ 总结检查表
-<a class=anchor href=#-%e6%80%bb%e7%bb%93%e6%a3%80%e6%9f%a5%e8%a1%a8>#</a></h2><div class=table-outer><table><thead><tr><th>步骤</th><th>是否解决问题</th></tr></thead><tbody><tr><td>避免 install.wim 写入失败</td><td>✅ 使用本地复制解决</td></tr><tr><td>FAT32 兼容性限制</td><td>✅ 使用 ExFAT 格式解决</td></tr><tr><td>安装文件完整性</td><td>✅ 使用 rsync + swm 保证</td></tr><tr><td>安装兼容性（UEFI 启动）</td><td>✅ GPT + ExFAT 满足</td></tr></tbody></table></div><hr><p>如你希望我将以上步骤封装成一个 <strong>带变量提示的 shell 脚本</strong>，只需输入 ISO 路径和设备号即可一键执行，我可以立刻帮你生成。是否需要？</p></div></article><div class=single-pagination><hr><div class=flexnowrap><div class=single-pagination-prev><div class=single-pagination-container-prev><div class=single-pagination-text>←</div><div class=single-pagination-text><a href=/posts/vscodevim%E4%BB%A5%E5%8F%8A%E6%88%91%E4%BB%AC%E8%B5%96%E4%BB%A5%E7%94%9F%E5%AD%98%E7%9A%84%E7%BC%96%E8%BE%91/>VSCode & Vim以及我们赖以生存的编辑器</a></div></div></div><div class=single-pagination-next></div></div><hr></div><div class=back-to-top><a href=#top>back to top</a></div></div></main></div><footer><p>Powered by
-<a href=https://gohugo.io/>Hugo</a>
-and
-<a href=https://github.com/tomfran/typo>tomfran/typo</a></p></footer><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js onload=renderMathInElement(document.body)></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script></body><script defer src=/js/copy-code.js></script></html>
+<!DOCTYPE html>
+<html lang="zh-cn"
+  dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="https://zac2049.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://zac2049.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://zac2049.github.io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://zac2049.github.io/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://zac2049.github.io/apple-touch-icon.png">
+
+<meta name="description" content=""/>
+
+
+
+<title>
+    
+    Mac 上制作 Win11 安装 U 盘 | Hedgehugger Land
+    
+</title>
+
+<link rel="canonical" href="https://zac2049.github.io/posts/mac%E4%B8%8A%E5%88%B6%E4%BD%9Cwin11%E7%9A%84u%E7%9B%98/"/>
+
+<meta property="og:url" content="https://zac2049.github.io/posts/mac%E4%B8%8A%E5%88%B6%E4%BD%9Cwin11%E7%9A%84u%E7%9B%98/">
+  <meta property="og:site_name" content="Hedgehugger Land">
+  <meta property="og:title" content="Mac 上制作 Win11 安装 U 盘">
+  <meta property="og:description" content="下面是**基于你遇到的问题（install.wim 太大，mv 失败）**之后，修正优化的完整终端操作步骤。我们将采取 先复制 install.wim 到本地磁盘，再使用 wimlib 分割后写入 U 盘 的方式，确保整个流程稳定、可靠，适配 Windows 11 的安装要求。
+✅ Mac 上制作 Win11 安装 U 盘（分割 install.wim，适配 &gt;4GB） # 📦 前提准备 # 项目 要求 系统镜像 下载 Win11 官方 ISO U 盘 ≥8GB，建议使用 ExFAT 格式，避免 FAT32 限制 工具 Terminal，Homebrew，wimlib 文件路径 本文示例路径使用：/Volumes/WIN11 为 U 盘，~/Desktop/install.wim 为中转文件 🛠️ 全流程操作步骤 # 🔹1. 插入 U 盘并查看设备号 # diskutil list copy 确认你的 U 盘设备号（如 /dev/disk2），请替换下面命令中的设备号！
+🔹2. 格式化 U 盘为 ExFAT &#43; GPT # diskutil eraseDisk ExFAT WIN11 GPT /dev/disk2 copy WIN11 为卷标名，可自定义。ExFAT 支持大文件写入。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-05-09T10:00:00+08:00">
+    <meta property="article:modified_time" content="2025-05-09T10:00:00+08:00">
+    <meta property="article:tag" content="技术">
+    <meta property="article:tag" content="工具">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.62d01681d225adacee86df270dafcee77c97b3090382b12674dbf3fa180d4749.css" media="all">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+<body class="auto">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="https://zac2049.github.io/">Hedgehugger Land</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/" >
+                /home
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/posts" >
+                /posts
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/tags" >
+                /tags
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/about" >
+                /about
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+
+<div class="breadcrumbs"><a href="/">Home</a><span class="breadcrumbs-separator">/</span><a href="/posts/">Posts</a><span class="breadcrumbs-separator">/</span>
+        <a href="/posts/mac%E4%B8%8A%E5%88%B6%E4%BD%9Cwin11%E7%9A%84u%E7%9B%98/">Mac 上制作 Win11 安装 U 盘</a></div>
+
+
+<div >
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">Mac 上制作 Win11 安装 U 盘</h1>
+        
+        <div class="single-subsummary">
+          
+          <div>
+            
+            <p class="single-date">
+              <time datetime="2025-05-09T10:00:00&#43;08:00">May 9, 2025</time>
+            </p>
+          </div>
+        </div>
+        
+    </header>
+    
+    <div class="single-content">
+      <p>下面是**基于你遇到的问题（install.wim 太大，<code>mv</code> 失败）**之后，<strong>修正优化的完整终端操作步骤</strong>。我们将采取 <strong>先复制 install.wim 到本地磁盘，再使用 <code>wimlib</code> 分割后写入 U 盘</strong> 的方式，确保整个流程稳定、可靠，适配 Windows 11 的安装要求。</p>
+<hr>
+<h2 class="heading" id="-mac-上制作-win11-安装-u-盘分割-installwim适配-4gb">
+  ✅ Mac 上制作 Win11 安装 U 盘（分割 install.wim，适配 &gt;4GB）
+  <a class="anchor" href="#-mac-%e4%b8%8a%e5%88%b6%e4%bd%9c-win11-%e5%ae%89%e8%a3%85-u-%e7%9b%98%e5%88%86%e5%89%b2-installwim%e9%80%82%e9%85%8d-4gb">#</a>
+</h2>
+<h3 class="heading" id="-前提准备">
+  📦 前提准备
+  <a class="anchor" href="#-%e5%89%8d%e6%8f%90%e5%87%86%e5%a4%87">#</a>
+</h3>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th>项目</th>
+                <th>要求</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>系统镜像</td>
+                <td>下载 Win11 官方 ISO</td>
+            </tr>
+            <tr>
+                <td>U 盘</td>
+                <td>≥8GB，建议使用 <strong>ExFAT</strong> 格式，避免 FAT32 限制</td>
+            </tr>
+            <tr>
+                <td>工具</td>
+                <td>Terminal，Homebrew，wimlib</td>
+            </tr>
+            <tr>
+                <td>文件路径</td>
+                <td>本文示例路径使用：<code>/Volumes/WIN11</code> 为 U 盘，<code>~/Desktop/install.wim</code> 为中转文件</td>
+            </tr>
+        </tbody>
+    </table>
+</div><hr>
+<h2 class="heading" id="-全流程操作步骤">
+  🛠️ 全流程操作步骤
+  <a class="anchor" href="#-%e5%85%a8%e6%b5%81%e7%a8%8b%e6%93%8d%e4%bd%9c%e6%ad%a5%e9%aa%a4">#</a>
+</h2>
+<h3 class="heading" id="1-插入-u-盘并查看设备号">
+  🔹1. 插入 U 盘并查看设备号
+  <a class="anchor" href="#1-%e6%8f%92%e5%85%a5-u-%e7%9b%98%e5%b9%b6%e6%9f%a5%e7%9c%8b%e8%ae%be%e5%a4%87%e5%8f%b7">#</a>
+</h3>
+<div class="code-block">
+  <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>diskutil list</span></span></code></pre></div>
+  <button class="copy-code-button">copy</button>
+</div>
+<p>确认你的 U 盘设备号（如 <code>/dev/disk2</code>），<strong>请替换下面命令中的设备号！</strong></p>
+<hr>
+<h3 class="heading" id="2-格式化-u-盘为-exfat--gpt">
+  🔹2. 格式化 U 盘为 ExFAT + GPT
+  <a class="anchor" href="#2-%e6%a0%bc%e5%bc%8f%e5%8c%96-u-%e7%9b%98%e4%b8%ba-exfat--gpt">#</a>
+</h3>
+<div class="code-block">
+  <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>diskutil eraseDisk ExFAT WIN11 GPT /dev/disk2</span></span></code></pre></div>
+  <button class="copy-code-button">copy</button>
+</div>
+<blockquote>
+<p><code>WIN11</code> 为卷标名，可自定义。ExFAT 支持大文件写入。</p>
+</blockquote>
+<hr>
+<h3 class="heading" id="3-挂载-windows-11-iso-镜像">
+  🔹3. 挂载 Windows 11 ISO 镜像
+  <a class="anchor" href="#3-%e6%8c%82%e8%bd%bd-windows-11-iso-%e9%95%9c%e5%83%8f">#</a>
+</h3>
+<div class="code-block">
+  <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hdiutil mount ~/Downloads/Win11_*.iso</span></span></code></pre></div>
+  <button class="copy-code-button">copy</button>
+</div>
+<blockquote>
+<p>通常会挂载为 <code>/Volumes/PCHA_X64FREO_ZH-CN_DV9</code>（中文 ISO）或类似路径，请记住它。</p>
+</blockquote>
+<hr>
+<h3 class="heading" id="4-安装-wimlib如未安装">
+  🔹4. 安装 wimlib（如未安装）
+  <a class="anchor" href="#4-%e5%ae%89%e8%a3%85-wimlib%e5%a6%82%e6%9c%aa%e5%ae%89%e8%a3%85">#</a>
+</h3>
+<div class="code-block">
+  <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>brew install wimlib</span></span></code></pre></div>
+  <button class="copy-code-button">copy</button>
+</div>
+<hr>
+<h3 class="heading" id="5-复制-installwim-到本地桌面">
+  🔹5. 复制 install.wim 到本地桌面
+  <a class="anchor" href="#5-%e5%a4%8d%e5%88%b6-installwim-%e5%88%b0%e6%9c%ac%e5%9c%b0%e6%a1%8c%e9%9d%a2">#</a>
+</h3>
+<div class="code-block">
+  <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cp /Volumes/PCHA_X64FREO_ZH-CN_DV9/sources/install.wim ~/Desktop/install.wim</span></span></code></pre></div>
+  <button class="copy-code-button">copy</button>
+</div>
+<blockquote>
+<p>📌 不直接写入 U盘，避免失败。</p>
+</blockquote>
+<hr>
+<h3 class="heading" id="6-拷贝其他安装文件不包括-installwim">
+  🔹6. 拷贝其他安装文件（不包括 install.wim）
+  <a class="anchor" href="#6-%e6%8b%b7%e8%b4%9d%e5%85%b6%e4%bb%96%e5%ae%89%e8%a3%85%e6%96%87%e4%bb%b6%e4%b8%8d%e5%8c%85%e6%8b%ac-installwim">#</a>
+</h3>
+<div class="code-block">
+  <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rsync -avh /Volumes/PCHA_X64FREO_ZH-CN_DV9/ /Volumes/WIN11/</span></span></code></pre></div>
+  <button class="copy-code-button">copy</button>
+</div>
+<hr>
+<h3 class="heading" id="7-分割-installwim-并写入-u-盘">
+  🔹7. 分割 install.wim 并写入 U 盘
+  <a class="anchor" href="#7-%e5%88%86%e5%89%b2-installwim-%e5%b9%b6%e5%86%99%e5%85%a5-u-%e7%9b%98">#</a>
+</h3>
+<div class="code-block">
+  <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>wimlib-imagex split ~/Desktop/install.wim /Volumes/WIN11/sources/install.swm <span style="color:#ae81ff">3800</span></span></span></code></pre></div>
+  <button class="copy-code-button">copy</button>
+</div>
+<blockquote>
+<p>将大于 4GB 的 install.wim 分割为多个 install.swm/install2.swm 文件</p>
+</blockquote>
+<hr>
+<h3 class="heading" id="8-清理本地临时文件可选">
+  🔹8. 清理本地临时文件（可选）
+  <a class="anchor" href="#8-%e6%b8%85%e7%90%86%e6%9c%ac%e5%9c%b0%e4%b8%b4%e6%97%b6%e6%96%87%e4%bb%b6%e5%8f%af%e9%80%89">#</a>
+</h3>
+<div class="code-block">
+  <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rm ~/Desktop/install.wim</span></span></code></pre></div>
+  <button class="copy-code-button">copy</button>
+</div>
+<hr>
+<h3 class="heading" id="9-卸载镜像和弹出-u-盘可选">
+  🔹9. 卸载镜像和弹出 U 盘（可选）
+  <a class="anchor" href="#9-%e5%8d%b8%e8%bd%bd%e9%95%9c%e5%83%8f%e5%92%8c%e5%bc%b9%e5%87%ba-u-%e7%9b%98%e5%8f%af%e9%80%89">#</a>
+</h3>
+<div class="code-block">
+  <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hdiutil unmount /Volumes/PCHA_X64FREO_ZH-CN_DV9
+</span></span><span style="display:flex;"><span>diskutil eject /dev/disk2</span></span></code></pre></div>
+  <button class="copy-code-button">copy</button>
+</div>
+<hr>
+<h2 class="heading" id="-安装时使用说明">
+  ✅ 安装时使用说明
+  <a class="anchor" href="#-%e5%ae%89%e8%a3%85%e6%97%b6%e4%bd%bf%e7%94%a8%e8%af%b4%e6%98%8e">#</a>
+</h2>
+<ol>
+<li>将制作好的 U 盘插入目标电脑</li>
+<li>开机按 <code>F12</code> / <code>ESC</code> / <code>F8</code> 进入启动菜单</li>
+<li>从 USB UEFI 启动</li>
+<li>安装过程会自动识别 <code>install.swm</code> 文件，无需手动干预</li>
+</ol>
+<hr>
+<h2 class="heading" id="-总结检查表">
+  ✅ 总结检查表
+  <a class="anchor" href="#-%e6%80%bb%e7%bb%93%e6%a3%80%e6%9f%a5%e8%a1%a8">#</a>
+</h2>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th>步骤</th>
+                <th>是否解决问题</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>避免 install.wim 写入失败</td>
+                <td>✅ 使用本地复制解决</td>
+            </tr>
+            <tr>
+                <td>FAT32 兼容性限制</td>
+                <td>✅ 使用 ExFAT 格式解决</td>
+            </tr>
+            <tr>
+                <td>安装文件完整性</td>
+                <td>✅ 使用 rsync + swm 保证</td>
+            </tr>
+            <tr>
+                <td>安装兼容性（UEFI 启动）</td>
+                <td>✅ GPT + ExFAT 满足</td>
+            </tr>
+        </tbody>
+    </table>
+</div><hr>
+<p>如你希望我将以上步骤封装成一个 <strong>带变量提示的 shell 脚本</strong>，只需输入 ISO 路径和设备号即可一键执行，我可以立刻帮你生成。是否需要？</p>
+
+    </div>
+  </article>
+
+  
+
+  
+
+  
+  
+
+<div class="single-pagination">
+    <hr />
+
+    <div class="flexnowrap">
+
+        <div class="single-pagination-prev">
+            
+            <div class="single-pagination-container-prev">
+                <div class="single-pagination-text">←</div>
+                <div class="single-pagination-text">
+                    <a href="/posts/vscodevim%E4%BB%A5%E5%8F%8A%E6%88%91%E4%BB%AC%E8%B5%96%E4%BB%A5%E7%94%9F%E5%AD%98%E7%9A%84%E7%BC%96%E8%BE%91/">
+                        VSCode &amp; Vim以及我们赖以生存的编辑器
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="single-pagination-next">
+            
+        </div>
+
+    </div>
+
+    <hr />
+</div>
+
+
+
+  
+
+  
+
+  
+  <div class="back-to-top">
+    <a href="#top">
+      back to top
+    </a>
+  </div>
+  
+
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  
+<script defer 
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ]
+    });
+  });
+</script>
+  
+</body>
+
+<script defer src="/js/copy-code.js"></script>
+</html>

@@ -1,8 +1,450 @@
-<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width"><link rel=icon type=image/ico href=https://zac2049.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://zac2049.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://zac2049.github.io/favicon-32x32.png><link rel=icon type=image/png sizes=192x192 href=https://zac2049.github.io/android-chrome-192x192.png><link rel=apple-touch-icon sizes=180x180 href=https://zac2049.github.io/apple-touch-icon.png><meta name=description content><title>VSCode & Vim以及我们赖以生存的编辑器 | Hedgehugger Land
-</title><link rel=canonical href=https://zac2049.github.io/posts/vscodevim%E4%BB%A5%E5%8F%8A%E6%88%91%E4%BB%AC%E8%B5%96%E4%BB%A5%E7%94%9F%E5%AD%98%E7%9A%84%E7%BC%96%E8%BE%91/><meta property="og:url" content="https://zac2049.github.io/posts/vscodevim%E4%BB%A5%E5%8F%8A%E6%88%91%E4%BB%AC%E8%B5%96%E4%BB%A5%E7%94%9F%E5%AD%98%E7%9A%84%E7%BC%96%E8%BE%91/"><meta property="og:site_name" content="Hedgehugger Land"><meta property="og:title" content="VSCode & Vim以及我们赖以生存的编辑器"><meta property="og:description" content="VSCode 常用快捷键（O3 回答） # 排名 常用操作 VS Code 快捷键Win/Linux (Mac) Vim 内建等效操作 1 多光标：选下一处/全部匹配 Ctrl +D / Ctrl +Shift +L (⌘ +D / ⌘ +Shift +L) Ctrl-v 列块选 → j/k 移动 → A/I 统一编辑；或 /pattern → :g//norm … 2 命令面板 Ctrl +Shift +P (⌘ +Shift +P) : 进入命令行；q: 打开历史 3 快速打开文件 Ctrl +P (⌘ +P) :e path<Tab> 模糊补全，或 :find {file} 4 行/块注释切换 Ctrl +/ (⌘ +/) 视觉模式选择 → gc（需安装 surround/commentary；原生可用 :s/^/\/\// 等批量） 5 复制/删除整行 Shift +Alt +↓ / ↑ 复制；Ctrl +Shift +K 删除 (⌥ +Shift +↓ / ↑，⌘ +Shift +K) yy p 复制行；dd 删除行 6 移动行上下 Alt +↓ / ↑ (⌥ +↓ / ↑) :m+1 / :m-2；可在可视行模式 V 后用 J/K 7 全文件搜索 Ctrl +Shift +F (⌘ +Shift +F) :vimgrep /pattern/ **/* → :copen 8 当前文件内查找 Ctrl +F (⌘ +F) /pattern；n/N 继续 9 批量替换 Ctrl +H (⌘ +Alt +F) :%s/old/new/gc 10 格式化文档 Shift +Alt +F (⌥ +Shift +F) 依据语言插件：gg=G（缩进格式），或外部 LSP :!clang-format 等 11 跳到定义 / 返回 F12 / Alt +← (⌘ +点击 / ⌃ +-) gd 跳定义，Ctrl-o 回退 12 重命名符号 F2 :IncRename（Neovim 新命令）或插件 coc.nvim gr；原生可 :%s/<C-r><C-w>/new/gc 13 切换编辑器标签 Ctrl +PgUp/PgDn (⌘ +⌥ +←/→) :bn / :bp，或 gt / gT 14 打开内置终端 Ctrl +` (⌃ +` ) :terminal 分屏终端 15 折叠/展开代码块 Ctrl +Shift +[ / ] (⌥ +⌘ +[ / ]) zc 折叠，zo 展开；zM / zR 全折/全展 别忽视 VS Code 自带的“三板斧” # 功能 默认快捷键 (Win/Linux) 强在哪 多光标 Alt+Click 选点；Ctrl+D 选下一处；Ctrl+Shift+L 选全部 同时改变量名/声明最简方式 命令面板 Ctrl+Shift+P 所有命令即时 fuzzy 搜索 全局跳转 Ctrl+T 查看符号；Ctrl+P 模糊打开文件 不需要第三方插件也像 IDE"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-05-09T10:00:00+08:00"><meta property="article:modified_time" content="2025-05-09T10:00:00+08:00"><meta property="article:tag" content="技术"><meta property="article:tag" content="工具"><link rel=stylesheet href=/assets/combined.min.62d01681d225adacee86df270dafcee77c97b3090382b12674dbf3fa180d4749.css media=all></head><body class=auto><div class=content><header><div class=header><h1 class=header-title><a href=https://zac2049.github.io/>Hedgehugger Land</a></h1><div class=header-menu><p class=small><a href=/>/home</a></p><p class=small><a href=/posts>/posts</a></p><p class=small><a href=/tags>/tags</a></p><p class=small><a href=/about>/about</a></p></div></div></header><main class=main><div class=breadcrumbs><a href=/>Home</a><span class=breadcrumbs-separator>/</span><a href=/posts/>Posts</a><span class=breadcrumbs-separator>/</span>
-<a href=/posts/vscodevim%E4%BB%A5%E5%8F%8A%E6%88%91%E4%BB%AC%E8%B5%96%E4%BB%A5%E7%94%9F%E5%AD%98%E7%9A%84%E7%BC%96%E8%BE%91/>VSCode & Vim以及我们赖以生存的编辑器</a></div><div><article><header class=single-intro-container><h1 class=single-title>VSCode & Vim以及我们赖以生存的编辑器</h1><div class=single-subsummary><div><p class=single-date><time datetime=2025-05-09T10:00:00+08:00>May 9, 2025</time></p></div></div></header><div class=single-content><h2 class=heading id=vscode-常用快捷键o3-回答>VSCode 常用快捷键（O3 回答）
-<a class=anchor href=#vscode-%e5%b8%b8%e7%94%a8%e5%bf%ab%e6%8d%b7%e9%94%aeo3-%e5%9b%9e%e7%ad%94>#</a></h2><div class=table-outer><table><thead><tr><th style=text-align:right>排名</th><th>常用操作</th><th>VS Code 快捷键<sup>Win/Linux (Mac)</sup></th><th>Vim 内建等效操作</th></tr></thead><tbody><tr><td style=text-align:right>1</td><td><strong>多光标：选下一处/全部匹配</strong></td><td><code>Ctrl +D</code> / <code>Ctrl +Shift +L</code> (<code>⌘ +D</code> / <code>⌘ +Shift +L</code>)</td><td><kbd>Ctrl-v</kbd> 列块选 → <kbd>j/k</kbd> 移动 → <kbd>A/I</kbd> 统一编辑；或 <code>/pattern</code> → <code>:g//norm …</code></td></tr><tr><td style=text-align:right>2</td><td><strong>命令面板</strong></td><td><code>Ctrl +Shift +P</code> (<code>⌘ +Shift +P</code>)</td><td><code>:</code> 进入命令行；<code>q:</code> 打开历史</td></tr><tr><td style=text-align:right>3</td><td><strong>快速打开文件</strong></td><td><code>Ctrl +P</code> (<code>⌘ +P</code>)</td><td><code>:e path&lt;Tab></code> 模糊补全，或 <code>:find {file}</code></td></tr><tr><td style=text-align:right>4</td><td><strong>行/块注释切换</strong></td><td><code>Ctrl +/</code> (<code>⌘ +/</code>)</td><td>视觉模式选择 → <code>gc</code>（需安装 surround/commentary；原生可用 <code>:s/^/\/\//</code> 等批量）</td></tr><tr><td style=text-align:right>5</td><td><strong>复制/删除整行</strong></td><td><code>Shift +Alt +↓ / ↑</code> 复制；<code>Ctrl +Shift +K</code> 删除 (<code>⌥ +Shift +↓ / ↑</code>，<code>⌘ +Shift +K</code>)</td><td><code>yy p</code> 复制行；<code>dd</code> 删除行</td></tr><tr><td style=text-align:right>6</td><td><strong>移动行上下</strong></td><td><code>Alt +↓ / ↑</code> (<code>⌥ +↓ / ↑</code>)</td><td><code>:m+1</code> / <code>:m-2</code>；可在可视行模式 <code>V</code> 后用 <code>J/K</code></td></tr><tr><td style=text-align:right>7</td><td><strong>全文件搜索</strong></td><td><code>Ctrl +Shift +F</code> (<code>⌘ +Shift +F</code>)</td><td><code>:vimgrep /pattern/ **/*</code> → <code>:copen</code></td></tr><tr><td style=text-align:right>8</td><td><strong>当前文件内查找</strong></td><td><code>Ctrl +F</code> (<code>⌘ +F</code>)</td><td><code>/pattern</code>；<code>n/N</code> 继续</td></tr><tr><td style=text-align:right>9</td><td><strong>批量替换</strong></td><td><code>Ctrl +H</code> (<code>⌘ +Alt +F</code>)</td><td><code>:%s/old/new/gc</code></td></tr><tr><td style=text-align:right>10</td><td><strong>格式化文档</strong></td><td><code>Shift +Alt +F</code> (<code>⌥ +Shift +F</code>)</td><td>依据语言插件：<code>gg=G</code>（缩进格式），或外部 LSP <code>:!clang-format</code> 等</td></tr><tr><td style=text-align:right>11</td><td><strong>跳到定义 / 返回</strong></td><td><code>F12</code> / <code>Alt +←</code> (<code>⌘ +点击</code> / <code>⌃ +-</code>)</td><td><code>gd</code> 跳定义，<code>Ctrl-o</code> 回退</td></tr><tr><td style=text-align:right>12</td><td><strong>重命名符号</strong></td><td><code>F2</code></td><td><code>:IncRename</code>（Neovim 新命令）或插件 <em>coc.nvim</em> <code>gr</code>；原生可 <code>:%s/&lt;C-r>&lt;C-w>/new/gc</code></td></tr><tr><td style=text-align:right>13</td><td><strong>切换编辑器标签</strong></td><td><code>Ctrl +PgUp/PgDn</code> (<code>⌘ +⌥ +←/→</code>)</td><td><code>:bn</code> / <code>:bp</code>，或 <code>gt</code> / <code>gT</code></td></tr><tr><td style=text-align:right>14</td><td><strong>打开内置终端</strong></td><td><code>Ctrl +`</code> (<code>⌃ +` </code>)</td><td><code>:terminal</code> 分屏终端</td></tr><tr><td style=text-align:right>15</td><td><strong>折叠/展开代码块</strong></td><td><code>Ctrl +Shift +[ / ]</code> (<code>⌥ +⌘ +[ / ]</code>)</td><td><code>zc</code> 折叠，<code>zo</code> 展开；<code>zM</code> / <code>zR</code> 全折/全展</td></tr></tbody></table></div><h3 class=heading id=别忽视-vs-code-自带的三板斧>别忽视 VS Code 自带的“三板斧”
-<a class=anchor href=#%e5%88%ab%e5%bf%bd%e8%a7%86-vs-code-%e8%87%aa%e5%b8%a6%e7%9a%84%e4%b8%89%e6%9d%bf%e6%96%a7>#</a></h3><div class=table-outer><table><thead><tr><th>功能</th><th>默认快捷键 (Win/Linux)</th><th>强在哪</th></tr></thead><tbody><tr><td><strong>多光标</strong></td><td><code>Alt+Click</code> 选点；<code>Ctrl+D</code> 选下一处；<code>Ctrl+Shift+L</code> 选全部</td><td>同时改变量名/声明最简方式</td></tr><tr><td><strong>命令面板</strong></td><td><code>Ctrl+Shift+P</code></td><td>所有命令即时 fuzzy 搜索</td></tr><tr><td><strong>全局跳转</strong></td><td><code>Ctrl+T</code> 查看符号；<code>Ctrl+P</code> 模糊打开文件</td><td>不需要第三方插件也像 IDE</td></tr></tbody></table></div></div></article><div class=single-pagination><hr><div class=flexnowrap><div class=single-pagination-prev><div class=single-pagination-container-prev><div class=single-pagination-text>←</div><div class=single-pagination-text><a href=/posts/%E6%B5%85%E8%AF%86%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B/>浅识扩散模型</a></div></div></div><div class=single-pagination-next><div class=single-pagination-container-next><div class=single-pagination-text><a href=/posts/mac%E4%B8%8A%E5%88%B6%E4%BD%9Cwin11%E7%9A%84u%E7%9B%98/>Mac 上制作 Win11 安装 U 盘</a></div><div class=single-pagination-text>→</div></div></div></div><hr></div><div class=back-to-top><a href=#top>back to top</a></div></div></main></div><footer><p>Powered by
-<a href=https://gohugo.io/>Hugo</a>
-and
-<a href=https://github.com/tomfran/typo>tomfran/typo</a></p></footer><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js onload=renderMathInElement(document.body)></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script></body><script defer src=/js/copy-code.js></script></html>
+<!DOCTYPE html>
+<html lang="zh-cn"
+  dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="https://zac2049.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://zac2049.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://zac2049.github.io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://zac2049.github.io/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://zac2049.github.io/apple-touch-icon.png">
+
+<meta name="description" content=""/>
+
+
+
+<title>
+    
+    VSCode &amp; Vim以及我们赖以生存的编辑器 | Hedgehugger Land
+    
+</title>
+
+<link rel="canonical" href="https://zac2049.github.io/posts/vscodevim%E4%BB%A5%E5%8F%8A%E6%88%91%E4%BB%AC%E8%B5%96%E4%BB%A5%E7%94%9F%E5%AD%98%E7%9A%84%E7%BC%96%E8%BE%91/"/>
+
+<meta property="og:url" content="https://zac2049.github.io/posts/vscodevim%E4%BB%A5%E5%8F%8A%E6%88%91%E4%BB%AC%E8%B5%96%E4%BB%A5%E7%94%9F%E5%AD%98%E7%9A%84%E7%BC%96%E8%BE%91/">
+  <meta property="og:site_name" content="Hedgehugger Land">
+  <meta property="og:title" content="VSCode &amp; Vim以及我们赖以生存的编辑器">
+  <meta property="og:description" content="VSCode 常用快捷键（O3 回答） # 排名 常用操作 VS Code 快捷键Win/Linux (Mac) Vim 内建等效操作 1 多光标：选下一处/全部匹配 Ctrl &#43;D / Ctrl &#43;Shift &#43;L (⌘ &#43;D / ⌘ &#43;Shift &#43;L) Ctrl-v 列块选 → j/k 移动 → A/I 统一编辑；或 /pattern → :g//norm … 2 命令面板 Ctrl &#43;Shift &#43;P (⌘ &#43;Shift &#43;P) : 进入命令行；q: 打开历史 3 快速打开文件 Ctrl &#43;P (⌘ &#43;P) :e path&lt;Tab&gt; 模糊补全，或 :find {file} 4 行/块注释切换 Ctrl &#43;/ (⌘ &#43;/) 视觉模式选择 → gc（需安装 surround/commentary；原生可用 :s/^/\/\// 等批量） 5 复制/删除整行 Shift &#43;Alt &#43;↓ / ↑ 复制；Ctrl &#43;Shift &#43;K 删除 (⌥ &#43;Shift &#43;↓ / ↑，⌘ &#43;Shift &#43;K) yy p 复制行；dd 删除行 6 移动行上下 Alt &#43;↓ / ↑ (⌥ &#43;↓ / ↑) :m&#43;1 / :m-2；可在可视行模式 V 后用 J/K 7 全文件搜索 Ctrl &#43;Shift &#43;F (⌘ &#43;Shift &#43;F) :vimgrep /pattern/ **/* → :copen 8 当前文件内查找 Ctrl &#43;F (⌘ &#43;F) /pattern；n/N 继续 9 批量替换 Ctrl &#43;H (⌘ &#43;Alt &#43;F) :%s/old/new/gc 10 格式化文档 Shift &#43;Alt &#43;F (⌥ &#43;Shift &#43;F) 依据语言插件：gg=G（缩进格式），或外部 LSP :!clang-format 等 11 跳到定义 / 返回 F12 / Alt &#43;← (⌘ &#43;点击 / ⌃ &#43;-) gd 跳定义，Ctrl-o 回退 12 重命名符号 F2 :IncRename（Neovim 新命令）或插件 coc.nvim gr；原生可 :%s/&lt;C-r&gt;&lt;C-w&gt;/new/gc 13 切换编辑器标签 Ctrl &#43;PgUp/PgDn (⌘ &#43;⌥ &#43;←/→) :bn / :bp，或 gt / gT 14 打开内置终端 Ctrl &#43;` (⌃ &#43;` ) :terminal 分屏终端 15 折叠/展开代码块 Ctrl &#43;Shift &#43;[ / ] (⌥ &#43;⌘ &#43;[ / ]) zc 折叠，zo 展开；zM / zR 全折/全展 别忽视 VS Code 自带的“三板斧” # 功能 默认快捷键 (Win/Linux) 强在哪 多光标 Alt&#43;Click 选点；Ctrl&#43;D 选下一处；Ctrl&#43;Shift&#43;L 选全部 同时改变量名/声明最简方式 命令面板 Ctrl&#43;Shift&#43;P 所有命令即时 fuzzy 搜索 全局跳转 Ctrl&#43;T 查看符号；Ctrl&#43;P 模糊打开文件 不需要第三方插件也像 IDE">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-05-09T10:00:00+08:00">
+    <meta property="article:modified_time" content="2025-05-09T10:00:00+08:00">
+    <meta property="article:tag" content="技术">
+    <meta property="article:tag" content="工具">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.62d01681d225adacee86df270dafcee77c97b3090382b12674dbf3fa180d4749.css" media="all">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+<body class="auto">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="https://zac2049.github.io/">Hedgehugger Land</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/" >
+                /home
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/posts" >
+                /posts
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/tags" >
+                /tags
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/about" >
+                /about
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+
+<div class="breadcrumbs"><a href="/">Home</a><span class="breadcrumbs-separator">/</span><a href="/posts/">Posts</a><span class="breadcrumbs-separator">/</span>
+        <a href="/posts/vscodevim%E4%BB%A5%E5%8F%8A%E6%88%91%E4%BB%AC%E8%B5%96%E4%BB%A5%E7%94%9F%E5%AD%98%E7%9A%84%E7%BC%96%E8%BE%91/">VSCode &amp; Vim以及我们赖以生存的编辑器</a></div>
+
+
+<div >
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">VSCode &amp; Vim以及我们赖以生存的编辑器</h1>
+        
+        <div class="single-subsummary">
+          
+          <div>
+            
+            <p class="single-date">
+              <time datetime="2025-05-09T10:00:00&#43;08:00">May 9, 2025</time>
+            </p>
+          </div>
+        </div>
+        
+    </header>
+    
+    <div class="single-content">
+      <h2 class="heading" id="vscode-常用快捷键o3-回答">
+  VSCode 常用快捷键（O3 回答）
+  <a class="anchor" href="#vscode-%e5%b8%b8%e7%94%a8%e5%bf%ab%e6%8d%b7%e9%94%aeo3-%e5%9b%9e%e7%ad%94">#</a>
+</h2>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align: right">排名</th>
+                <th>常用操作</th>
+                <th>VS Code 快捷键<sup>Win/Linux (Mac)</sup></th>
+                <th>Vim 内建等效操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: right">1</td>
+                <td><strong>多光标：选下一处/全部匹配</strong></td>
+                <td><code>Ctrl +D</code> / <code>Ctrl +Shift +L</code> (<code>⌘ +D</code> / <code>⌘ +Shift +L</code>)</td>
+                <td><kbd>Ctrl-v</kbd> 列块选 → <kbd>j/k</kbd> 移动 → <kbd>A/I</kbd> 统一编辑；或 <code>/pattern</code> → <code>:g//norm …</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: right">2</td>
+                <td><strong>命令面板</strong></td>
+                <td><code>Ctrl +Shift +P</code> (<code>⌘ +Shift +P</code>)</td>
+                <td><code>:</code> 进入命令行；<code>q:</code> 打开历史</td>
+            </tr>
+            <tr>
+                <td style="text-align: right">3</td>
+                <td><strong>快速打开文件</strong></td>
+                <td><code>Ctrl +P</code> (<code>⌘ +P</code>)</td>
+                <td><code>:e path&lt;Tab&gt;</code> 模糊补全，或 <code>:find {file}</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: right">4</td>
+                <td><strong>行/块注释切换</strong></td>
+                <td><code>Ctrl +/</code> (<code>⌘ +/</code>)</td>
+                <td>视觉模式选择 → <code>gc</code>（需安装 surround/commentary；原生可用 <code>:s/^/\/\//</code> 等批量）</td>
+            </tr>
+            <tr>
+                <td style="text-align: right">5</td>
+                <td><strong>复制/删除整行</strong></td>
+                <td><code>Shift +Alt +↓ / ↑</code> 复制；<code>Ctrl +Shift +K</code> 删除 (<code>⌥ +Shift +↓ / ↑</code>，<code>⌘ +Shift +K</code>)</td>
+                <td><code>yy p</code> 复制行；<code>dd</code> 删除行</td>
+            </tr>
+            <tr>
+                <td style="text-align: right">6</td>
+                <td><strong>移动行上下</strong></td>
+                <td><code>Alt +↓ / ↑</code> (<code>⌥ +↓ / ↑</code>)</td>
+                <td><code>:m+1</code> / <code>:m-2</code>；可在可视行模式 <code>V</code> 后用 <code>J/K</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: right">7</td>
+                <td><strong>全文件搜索</strong></td>
+                <td><code>Ctrl +Shift +F</code> (<code>⌘ +Shift +F</code>)</td>
+                <td><code>:vimgrep /pattern/ **/*</code> → <code>:copen</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: right">8</td>
+                <td><strong>当前文件内查找</strong></td>
+                <td><code>Ctrl +F</code> (<code>⌘ +F</code>)</td>
+                <td><code>/pattern</code>；<code>n/N</code> 继续</td>
+            </tr>
+            <tr>
+                <td style="text-align: right">9</td>
+                <td><strong>批量替换</strong></td>
+                <td><code>Ctrl +H</code> (<code>⌘ +Alt +F</code>)</td>
+                <td><code>:%s/old/new/gc</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: right">10</td>
+                <td><strong>格式化文档</strong></td>
+                <td><code>Shift +Alt +F</code> (<code>⌥ +Shift +F</code>)</td>
+                <td>依据语言插件：<code>gg=G</code>（缩进格式），或外部 LSP <code>:!clang-format</code> 等</td>
+            </tr>
+            <tr>
+                <td style="text-align: right">11</td>
+                <td><strong>跳到定义 / 返回</strong></td>
+                <td><code>F12</code> / <code>Alt +←</code> (<code>⌘ +点击</code> / <code>⌃ +-</code>)</td>
+                <td><code>gd</code> 跳定义，<code>Ctrl-o</code> 回退</td>
+            </tr>
+            <tr>
+                <td style="text-align: right">12</td>
+                <td><strong>重命名符号</strong></td>
+                <td><code>F2</code></td>
+                <td><code>:IncRename</code>（Neovim 新命令）或插件 <em>coc.nvim</em> <code>gr</code>；原生可 <code>:%s/&lt;C-r&gt;&lt;C-w&gt;/new/gc</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: right">13</td>
+                <td><strong>切换编辑器标签</strong></td>
+                <td><code>Ctrl +PgUp/PgDn</code> (<code>⌘ +⌥ +←/→</code>)</td>
+                <td><code>:bn</code> / <code>:bp</code>，或 <code>gt</code> / <code>gT</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: right">14</td>
+                <td><strong>打开内置终端</strong></td>
+                <td><code>Ctrl +`</code> (<code>⌃ +` </code>)</td>
+                <td><code>:terminal</code> 分屏终端</td>
+            </tr>
+            <tr>
+                <td style="text-align: right">15</td>
+                <td><strong>折叠/展开代码块</strong></td>
+                <td><code>Ctrl +Shift +[ / ]</code> (<code>⌥ +⌘ +[ / ]</code>)</td>
+                <td><code>zc</code> 折叠，<code>zo</code> 展开；<code>zM</code> / <code>zR</code> 全折/全展</td>
+            </tr>
+        </tbody>
+    </table>
+</div><h3 class="heading" id="别忽视-vs-code-自带的三板斧">
+  别忽视 VS Code 自带的“三板斧”
+  <a class="anchor" href="#%e5%88%ab%e5%bf%bd%e8%a7%86-vs-code-%e8%87%aa%e5%b8%a6%e7%9a%84%e4%b8%89%e6%9d%bf%e6%96%a7">#</a>
+</h3>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th>功能</th>
+                <th>默认快捷键 (Win/Linux)</th>
+                <th>强在哪</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>多光标</strong></td>
+                <td><code>Alt+Click</code> 选点；<code>Ctrl+D</code> 选下一处；<code>Ctrl+Shift+L</code> 选全部</td>
+                <td>同时改变量名/声明最简方式</td>
+            </tr>
+            <tr>
+                <td><strong>命令面板</strong></td>
+                <td><code>Ctrl+Shift+P</code></td>
+                <td>所有命令即时 fuzzy 搜索</td>
+            </tr>
+            <tr>
+                <td><strong>全局跳转</strong></td>
+                <td><code>Ctrl+T</code> 查看符号；<code>Ctrl+P</code> 模糊打开文件</td>
+                <td>不需要第三方插件也像 IDE</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    </div>
+  </article>
+
+  
+
+  
+
+  
+  
+
+<div class="single-pagination">
+    <hr />
+
+    <div class="flexnowrap">
+
+        <div class="single-pagination-prev">
+            
+            <div class="single-pagination-container-prev">
+                <div class="single-pagination-text">←</div>
+                <div class="single-pagination-text">
+                    <a href="/posts/%E6%B5%85%E8%AF%86%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B/">
+                        浅识扩散模型
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="single-pagination-next">
+            
+            <div class="single-pagination-container-next">
+                <div class="single-pagination-text">
+                    <a href="/posts/mac%E4%B8%8A%E5%88%B6%E4%BD%9Cwin11%E7%9A%84u%E7%9B%98/">
+                        Mac 上制作 Win11 安装 U 盘
+                    </a>
+                </div>
+                <div class="single-pagination-text">→</div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <hr />
+</div>
+
+
+
+  
+
+  
+
+  
+  <div class="back-to-top">
+    <a href="#top">
+      back to top
+    </a>
+  </div>
+  
+
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  
+<script defer 
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ]
+    });
+  });
+</script>
+  
+</body>
+
+<script defer src="/js/copy-code.js"></script>
+</html>
