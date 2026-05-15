@@ -1,4 +1,192 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Hedgehugger Land</title><link>https://zac2049.github.io/posts/</link><description>Recent content in Posts on Hedgehugger Land</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 09 May 2025 10:00:00 +0800</lastBuildDate><atom:link href="https://zac2049.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Mac 上制作 Win11 安装 U 盘</title><link>https://zac2049.github.io/posts/mac%E4%B8%8A%E5%88%B6%E4%BD%9Cwin11%E7%9A%84u%E7%9B%98/</link><pubDate>Fri, 09 May 2025 10:00:00 +0800</pubDate><guid>https://zac2049.github.io/posts/mac%E4%B8%8A%E5%88%B6%E4%BD%9Cwin11%E7%9A%84u%E7%9B%98/</guid><description>&lt;p>下面是**基于你遇到的问题（install.wim 太大，&lt;code>mv&lt;/code> 失败）**之后，&lt;strong>修正优化的完整终端操作步骤&lt;/strong>。我们将采取 &lt;strong>先复制 install.wim 到本地磁盘，再使用 &lt;code>wimlib&lt;/code> 分割后写入 U 盘&lt;/strong> 的方式，确保整个流程稳定、可靠，适配 Windows 11 的安装要求。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Hedgehugger Land</title><link>https://zac2049.github.io/posts/</link><description>Recent content in Posts on Hedgehugger Land</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 15 May 2026 16:59:21 +0800</lastBuildDate><atom:link href="https://zac2049.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Tmux使用指南</title><link>https://zac2049.github.io/posts/tmux%E4%BD%BF%E7%94%A8/</link><pubDate>Fri, 15 May 2026 16:59:21 +0800</pubDate><guid>https://zac2049.github.io/posts/tmux%E4%BD%BF%E7%94%A8/</guid><description>&lt;p>&lt;code>tmux&lt;/code> (Terminal Multiplexer) 是一个终端复用器，允许你在一个终端窗口中管理多个会话、窗口和面板。即使断开 SSH 连接，&lt;code>tmux&lt;/code> 中运行的任务也会继续在后台运行。&lt;/p>
+&lt;hr>
+&lt;h2 class="heading" id="核心概念">
+ 核心概念
+ &lt;a class="anchor" href="#%e6%a0%b8%e5%bf%83%e6%a6%82%e5%bf%b5">#&lt;/a>
+&lt;/h2>
+&lt;p>&lt;code>tmux&lt;/code> 有三层层级结构：&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Session (会话)&lt;/strong> — 最顶层容器，可包含多个窗口。&lt;/li>
+&lt;li>&lt;strong>Window (窗口)&lt;/strong> — 类似浏览器标签页，可分成多个面板。&lt;/li>
+&lt;li>&lt;strong>Pane (面板)&lt;/strong> — 窗口中的分栏。&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;h2 class="heading" id="安装">
+ 安装
+ &lt;a class="anchor" href="#%e5%ae%89%e8%a3%85">#&lt;/a>
+&lt;/h2>
+&lt;div class="code-block">
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Ubuntu/Debian&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install tmux
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># macOS&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>brew install tmux
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># CentOS&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo yum install tmux&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ &lt;button class="copy-code-button">copy&lt;/button>
+&lt;/div>
+&lt;hr>
+&lt;h2 class="heading" id="前缀键-prefix">
+ 前缀键 (Prefix)
+ &lt;a class="anchor" href="#%e5%89%8d%e7%bc%80%e9%94%ae-prefix">#&lt;/a>
+&lt;/h2>
+&lt;p>&lt;code>tmux&lt;/code> 的所有快捷键都需要先按前缀键，默认是 &lt;strong>&lt;code>Ctrl + b&lt;/code>&lt;/strong>（下文简写为 &lt;code>C-b&lt;/code>），松开后再按后续按键。&lt;/p>
+&lt;hr>
+&lt;h2 class="heading" id="会话管理-session">
+ 会话管理 (Session)
+ &lt;a class="anchor" href="#%e4%bc%9a%e8%af%9d%e7%ae%a1%e7%90%86-session">#&lt;/a>
+&lt;/h2>
+
+&lt;div class="table-outer">
+ &lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>动作&lt;/th>
+ &lt;th>外部命令&lt;/th>
+ &lt;th>内部快捷键 (C-b + &amp;hellip;)&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>新建并命名会话&lt;/td>
+ &lt;td>&lt;code>tmux new -s &amp;lt;name&amp;gt;&lt;/code>&lt;/td>
+ &lt;td>—&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>分离当前会话&lt;/td>
+ &lt;td>—&lt;/td>
+ &lt;td>&lt;code>d&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>查看所有会话&lt;/td>
+ &lt;td>&lt;code>tmux ls&lt;/code>&lt;/td>
+ &lt;td>&lt;code>s&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>接入指定会话&lt;/td>
+ &lt;td>&lt;code>tmux a -t &amp;lt;name&amp;gt;&lt;/code>&lt;/td>
+ &lt;td>—&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>杀死指定会话&lt;/td>
+ &lt;td>&lt;code>tmux kill-session -t &amp;lt;name&amp;gt;&lt;/code>&lt;/td>
+ &lt;td>—&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>重命名当前会话&lt;/td>
+ &lt;td>—&lt;/td>
+ &lt;td>&lt;code>$&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+ &lt;/table>
+&lt;/div>&lt;hr>
+&lt;h2 class="heading" id="窗口管理-window">
+ 窗口管理 (Window)
+ &lt;a class="anchor" href="#%e7%aa%97%e5%8f%a3%e7%ae%a1%e7%90%86-window">#&lt;/a>
+&lt;/h2>
+
+&lt;div class="table-outer">
+ &lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>动作&lt;/th>
+ &lt;th>快捷键 (C-b + &amp;hellip;)&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>新建窗口&lt;/td>
+ &lt;td>&lt;code>c&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>关闭当前窗口&lt;/td>
+ &lt;td>&lt;code>&amp;amp;&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>上一个窗口&lt;/td>
+ &lt;td>&lt;code>p&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>下一个窗口&lt;/td>
+ &lt;td>&lt;code>n&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>按数字切换&lt;/td>
+ &lt;td>&lt;code>0-9&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>重命名窗口&lt;/td>
+ &lt;td>&lt;code>,&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>窗口列表选择&lt;/td>
+ &lt;td>&lt;code>w&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+ &lt;/table>
+&lt;/div>&lt;hr>
+&lt;h2 class="heading" id="面板管理-pane">
+ 面板管理 (Pane)
+ &lt;a class="anchor" href="#%e9%9d%a2%e6%9d%bf%e7%ae%a1%e7%90%86-pane">#&lt;/a>
+&lt;/h2>
+
+&lt;div class="table-outer">
+ &lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>动作&lt;/th>
+ &lt;th>快捷键 (C-b + &amp;hellip;)&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>左右分屏&lt;/td>
+ &lt;td>&lt;code>%&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>上下分屏&lt;/td>
+ &lt;td>&lt;code>&amp;quot;&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>切换面板&lt;/td>
+ &lt;td>&lt;code>方向键&lt;/code> 或 &lt;code>o&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>关闭当前面板&lt;/td>
+ &lt;td>&lt;code>x&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>全屏/恢复 (Zoom)&lt;/td>
+ &lt;td>&lt;code>z&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>显示面板编号&lt;/td>
+ &lt;td>&lt;code>q&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>面板转为窗口&lt;/td>
+ &lt;td>&lt;code>!&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>与前一个面板互换&lt;/td>
+ &lt;td>&lt;code>{&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>与后一个面板互换&lt;/td>
+ &lt;td>&lt;code>}&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>顺时针轮转所有面板&lt;/td>
+ &lt;td>&lt;code>Ctrl + o&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>循环切换布局&lt;/td>
+ &lt;td>&lt;code>Space&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+ &lt;/table>
+&lt;/div>&lt;p>&lt;strong>精确交换面板&lt;/strong>：&lt;code>C-b&lt;/code> → &lt;code>:&lt;/code> 进入命令模式，输入 &lt;code>swap-pane -s 1 -t 3&lt;/code>。&lt;/p></description></item><item><title>Mac 上制作 Win11 安装 U 盘</title><link>https://zac2049.github.io/posts/mac%E4%B8%8A%E5%88%B6%E4%BD%9Cwin11%E7%9A%84u%E7%9B%98/</link><pubDate>Fri, 09 May 2025 10:00:00 +0800</pubDate><guid>https://zac2049.github.io/posts/mac%E4%B8%8A%E5%88%B6%E4%BD%9Cwin11%E7%9A%84u%E7%9B%98/</guid><description>&lt;p>下面是**基于你遇到的问题（install.wim 太大，&lt;code>mv&lt;/code> 失败）**之后，&lt;strong>修正优化的完整终端操作步骤&lt;/strong>。我们将采取 &lt;strong>先复制 install.wim 到本地磁盘，再使用 &lt;code>wimlib&lt;/code> 分割后写入 U 盘&lt;/strong> 的方式，确保整个流程稳定、可靠，适配 Windows 11 的安装要求。&lt;/p>
 &lt;hr>
 &lt;h2 class="heading" id="-mac-上制作-win11-安装-u-盘分割-installwim适配-4gb">
  ✅ Mac 上制作 Win11 安装 U 盘（分割 install.wim，适配 &amp;gt;4GB）
